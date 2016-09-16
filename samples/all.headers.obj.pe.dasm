@@ -1,0 +1,15 @@
+
+hello.obj:     file format pe-i386
+
+
+Disassembly of section .text:
+
+00000000 <_main>:
+   0:	55                   	push   %ebp
+   1:	8b ec                	mov    %esp,%ebp
+   3:	68 00 00 00 00       	push   $0x0
+   8:	e8 00 00 00 00       	call   d <_main+0xd>
+   d:	83 c4 04             	add    $0x4,%esp
+  10:	33 c0                	xor    %eax,%eax
+  12:	5d                   	pop    %ebp
+  13:	c3                   	ret    

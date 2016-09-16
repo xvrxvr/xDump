@@ -1,0 +1,230 @@
+
+hello.o:     file format elf64-x86-64
+
+Contents of the .debug_abbrev section:
+
+  Number TAG
+   1      DW_TAG_compile_unit    [has children]
+    DW_AT_stmt_list    DW_FORM_data4
+    DW_AT_high_pc      DW_FORM_addr
+    DW_AT_low_pc       DW_FORM_addr
+    DW_AT_producer     DW_FORM_string
+    DW_AT_language     DW_FORM_data1
+    DW_AT_name         DW_FORM_string
+    DW_AT_comp_dir     DW_FORM_string
+   2      DW_TAG_base_type    [no children]
+    DW_AT_name         DW_FORM_strp
+    DW_AT_byte_size    DW_FORM_data1
+    DW_AT_encoding     DW_FORM_data1
+   3      DW_TAG_base_type    [no children]
+    DW_AT_name         DW_FORM_string
+    DW_AT_byte_size    DW_FORM_data1
+    DW_AT_encoding     DW_FORM_data1
+   4      DW_TAG_subprogram    [no children]
+    DW_AT_external     DW_FORM_flag
+    DW_AT_name         DW_FORM_string
+    DW_AT_decl_file    DW_FORM_data1
+    DW_AT_decl_line    DW_FORM_data1
+    DW_AT_type         DW_FORM_ref4
+    DW_AT_low_pc       DW_FORM_addr
+    DW_AT_high_pc      DW_FORM_addr
+    DW_AT_frame_base   DW_FORM_data4
+
+Contents of the .debug_info section:
+
+  Compilation Unit @ offset 0x0:
+   Length:        0x11f (32-bit)
+   Version:       2
+   Abbrev Offset: 0
+   Pointer Size:  8
+ <0><b>: Abbrev Number: 1 (DW_TAG_compile_unit)
+    < c>   DW_AT_stmt_list   : 0x0	
+    <10>   DW_AT_high_pc     : 0x15	
+    <18>   DW_AT_low_pc      : 0x0	
+    <20>   DW_AT_producer    : GNU C++ 4.1.0 (SUSE Linux)	
+    <3b>   DW_AT_language    : 4	(C++)
+    <3c>   DW_AT_name        : hello.cpp	
+    <46>   DW_AT_comp_dir    : /nfs/ims/home/rakhvato/Modern-Programming-Technologies/lesson7	
+ <1><85>: Abbrev Number: 2 (DW_TAG_base_type)
+    <86>   DW_AT_name        : (indirect string, offset: 0x0): long unsigned int	
+    <8a>   DW_AT_byte_size   : 8	
+    <8b>   DW_AT_encoding    : 7	(unsigned)
+ <1><8c>: Abbrev Number: 3 (DW_TAG_base_type)
+    <8d>   DW_AT_name        : unsigned char	
+    <9b>   DW_AT_byte_size   : 1	
+    <9c>   DW_AT_encoding    : 8	(unsigned char)
+ <1><9d>: Abbrev Number: 3 (DW_TAG_base_type)
+    <9e>   DW_AT_name        : short unsigned int	
+    <b1>   DW_AT_byte_size   : 2	
+    <b2>   DW_AT_encoding    : 7	(unsigned)
+ <1><b3>: Abbrev Number: 3 (DW_TAG_base_type)
+    <b4>   DW_AT_name        : unsigned int	
+    <c1>   DW_AT_byte_size   : 4	
+    <c2>   DW_AT_encoding    : 7	(unsigned)
+ <1><c3>: Abbrev Number: 3 (DW_TAG_base_type)
+    <c4>   DW_AT_name        : signed char	
+    <d0>   DW_AT_byte_size   : 1	
+    <d1>   DW_AT_encoding    : 6	(signed char)
+ <1><d2>: Abbrev Number: 3 (DW_TAG_base_type)
+    <d3>   DW_AT_name        : short int	
+    <dd>   DW_AT_byte_size   : 2	
+    <de>   DW_AT_encoding    : 5	(signed)
+ <1><df>: Abbrev Number: 3 (DW_TAG_base_type)
+    <e0>   DW_AT_name        : int	
+    <e4>   DW_AT_byte_size   : 4	
+    <e5>   DW_AT_encoding    : 5	(signed)
+ <1><e6>: Abbrev Number: 3 (DW_TAG_base_type)
+    <e7>   DW_AT_name        : long int	
+    <f0>   DW_AT_byte_size   : 8	
+    <f1>   DW_AT_encoding    : 5	(signed)
+ <1><f2>: Abbrev Number: 2 (DW_TAG_base_type)
+    <f3>   DW_AT_name        : (indirect string, offset: 0x0): long unsigned int	
+    <f7>   DW_AT_byte_size   : 8	
+    <f8>   DW_AT_encoding    : 7	(unsigned)
+ <1><f9>: Abbrev Number: 3 (DW_TAG_base_type)
+    <fa>   DW_AT_name        : char	
+    <ff>   DW_AT_byte_size   : 1	
+    <100>   DW_AT_encoding    : 6	(signed char)
+ <1><101>: Abbrev Number: 4 (DW_TAG_subprogram)
+    <102>   DW_AT_external    : 1	
+    <103>   DW_AT_name        : main	
+    <108>   DW_AT_decl_file   : 1	
+    <109>   DW_AT_decl_line   : 3	
+    <10a>   DW_AT_type        : <0xdf>	
+    <10e>   DW_AT_low_pc      : 0x0	
+    <116>   DW_AT_high_pc     : 0x15	
+    <11e>   DW_AT_frame_base  : 0x0	(location list)
+
+Raw dump of debug contents of section .debug_line:
+
+  Offset:                      0x0
+  Length:                      58
+  DWARF Version:               2
+  Prologue Length:             32
+  Minimum Instruction Length:  1
+  Initial value of 'is_stmt':  1
+  Line Base:                   -5
+  Line Range:                  14
+  Opcode Base:                 13
+
+ Opcodes:
+  Opcode 1 has 0 args
+  Opcode 2 has 1 args
+  Opcode 3 has 1 args
+  Opcode 4 has 1 args
+  Opcode 5 has 1 args
+  Opcode 6 has 0 args
+  Opcode 7 has 0 args
+  Opcode 8 has 0 args
+  Opcode 9 has 1 args
+  Opcode 10 has 0 args
+  Opcode 11 has 0 args
+  Opcode 12 has 1 args
+
+ The Directory Table is empty.
+
+ The File Name Table:
+  Entry	Dir	Time	Size	Name
+  1	0	0	0	hello.cpp
+
+ Line Number Statements:
+  Extended opcode 2: set Address to 0x0
+  Special opcode 7: advance Address by 0 to 0x0 and Line by 2 to 3
+  Special opcode 63: advance Address by 4 to 0x4 and Line by 2 to 5
+  Special opcode 146: advance Address by 10 to 0xe and Line by 1 to 6
+  Special opcode 76: advance Address by 5 to 0x13 and Line by 1 to 7
+  Advance PC by 2 to 0x15
+  Extended opcode 1: End of Sequence
+
+
+Contents of the .debug_frame section:
+
+00000000 00000014 ffffffff CIE
+  Version:               1
+  Augmentation:          ""
+  Code alignment factor: 1
+  Data alignment factor: -8
+  Return address column: 16
+
+  DW_CFA_def_cfa: r7 (rsp) ofs 8
+  DW_CFA_offset: r16 (rip) at cfa-8
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+
+00000018 0000001c 00000000 FDE cie=00000000 pc=00000000..00000015
+  DW_CFA_advance_loc: 1 to 00000001
+  DW_CFA_def_cfa_offset: 16
+  DW_CFA_offset: r6 (rbp) at cfa-16
+  DW_CFA_advance_loc: 3 to 00000004
+  DW_CFA_def_cfa_register: r6 (rbp)
+
+Contents of the .eh_frame section:
+
+00000000 0000001c 00000000 CIE
+  Version:               1
+  Augmentation:          "zPR"
+  Code alignment factor: 1
+  Data alignment factor: -8
+  Return address column: 16
+  Augmentation data:     03 00 00 00 00 03
+
+  DW_CFA_def_cfa: r7 (rsp) ofs 8
+  DW_CFA_offset: r16 (rip) at cfa-8
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+
+00000020 0000001c 00000024 FDE cie=00000000 pc=00000000..00000015
+  DW_CFA_advance_loc: 1 to 00000001
+  DW_CFA_def_cfa_offset: 16
+  DW_CFA_offset: r6 (rbp) at cfa-16
+  DW_CFA_advance_loc: 3 to 00000004
+  DW_CFA_def_cfa_register: r6 (rbp)
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+  DW_CFA_nop
+
+Contents of the .debug_loc section:
+
+    Offset   Begin    End      Expression
+    00000000 0000000000000000 0000000000000001 (DW_OP_breg7 (rsp): 8)
+    00000000 0000000000000001 0000000000000004 (DW_OP_breg7 (rsp): 16)
+    00000000 0000000000000004 0000000000000015 (DW_OP_breg6 (rbp): 16)
+    00000000 <End of list>
+
+Contents of the .debug_pubnames section:
+
+  Length:                              23
+  Version:                             2
+  Offset into .debug_info section:     0x0
+  Size of area in .debug_info section: 291
+
+    Offset	Name
+    101   	main
+
+Contents of the .debug_aranges section:
+
+  Length:                   44
+  Version:                  2
+  Offset into .debug_info:  0x0
+  Pointer Size:             8
+  Segment Size:             0
+
+    Address            Length
+    0000000000000000 0000000000000015 
+    0000000000000000 0000000000000000 
+
+Contents of the .debug_str section:
+
+  0x00000000 6c6f6e67 20756e73 69676e65 6420696e long unsigned in
+  0x00000010 7400                                t.
+

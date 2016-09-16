@@ -1,0 +1,107 @@
+Microsoft (R) COFF Binary File Dumper Version 6.00.8447
+Copyright (C) Microsoft Corp 1992-1998. All rights reserved.
+
+
+Dump of file hello.obj
+
+File Type: COFF OBJECT
+
+FILE HEADER VALUES
+             14C machine (i386)
+               3 number of sections
+        48F33789 time date stamp Mon Oct 13 15:56:57 2008
+              E9 file pointer to symbol table
+               C number of symbols
+               0 size of optional header
+               0 characteristics
+
+SECTION HEADER #1
+.drectve name
+       0 physical address
+       0 virtual address
+      26 size of raw data
+      8C file pointer to raw data
+       0 file pointer to relocation table
+       0 file pointer to line numbers
+       0 number of relocations
+       0 number of line numbers
+  100A00 flags
+         Info
+         Remove
+         1 byte align
+
+RAW DATA #1
+  00000000: 2D 64 65 66 61 75 6C 74 6C 69 62 3A 4C 49 42 43  -defaultlib:LIBC
+  00000010: 20 2D 64 65 66 61 75 6C 74 6C 69 62 3A 4F 4C 44   -defaultlib:OLD
+  00000020: 4E 41 4D 45 53 20                                NAMES 
+
+   Linker Directives
+   -----------------
+   -defaultlib:LIBC
+   -defaultlib:OLDNAMES
+
+SECTION HEADER #2
+   .text name
+       0 physical address
+       0 virtual address
+      14 size of raw data
+      B2 file pointer to raw data
+      C6 file pointer to relocation table
+       0 file pointer to line numbers
+       2 number of relocations
+       0 number of line numbers
+60500020 flags
+         Code
+         16 byte align
+         Execute Read
+
+RAW DATA #2
+  00000000: 55 8B EC 68 00 00 00 00 E8 00 00 00 00 83 C4 04  U‹ìh....è....ƒÄ.
+  00000010: 33 C0 5D C3                                      3À]Ã
+
+RELOCATIONS #2
+                                                Symbol    Symbol
+ Offset    Type              Applied To         Index     Name
+ --------  ----------------  -----------------  --------  ------
+ 00000004  DIR32                      00000000         B  $SG577
+ 00000009  REL32                      00000000         8  _printf
+
+SECTION HEADER #3
+   .data name
+       0 physical address
+       0 virtual address
+       F size of raw data
+      DA file pointer to raw data
+       0 file pointer to relocation table
+       0 file pointer to line numbers
+       0 number of relocations
+       0 number of line numbers
+C0300040 flags
+         Initialized Data
+         4 byte align
+         Read Write
+
+RAW DATA #3
+  00000000: 48 65 6C 6C 6F 2C 20 77 6F 72 6C 64 21 0A 00     Hello, world!..
+
+COFF SYMBOL TABLE
+000 00000000 DEBUG  notype       Filename     | .file
+    hello.cpp
+002 000B2306 ABS    notype       Static       | @comp.id
+003 00000000 SECT1  notype       Static       | .drectve
+    Section length   26, #relocs    0, #linenums    0, checksum        0
+005 00000000 SECT2  notype       Static       | .text
+    Section length   14, #relocs    2, #linenums    0, checksum F829D91C
+007 00000000 SECT2  notype ()    External     | _main
+008 00000000 UNDEF  notype ()    External     | _printf
+009 00000000 SECT3  notype       Static       | .data
+    Section length    F, #relocs    0, #linenums    0, checksum 16C6219B
+00B 00000000 SECT3  notype       Static       | $SG577
+
+String Table Size = 0x0 bytes
+
+  Summary
+
+           F .data
+          26 .drectve
+          14 .text

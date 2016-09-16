@@ -1,0 +1,131 @@
+
+hello.exe:     file format pei-i386
+hello.exe
+architecture: i386, flags 0x0000010a:
+EXEC_P, HAS_DEBUG, D_PAGED
+start address 0x00401045
+
+Characteristics 0x10f
+	relocations stripped
+	executable
+	line numbers stripped
+	symbols stripped
+	32 bit words
+
+Time/Date		Mon Oct 13 14:54:46 2008
+Magic			010b	(PE32)
+MajorLinkerVersion	6
+MinorLinkerVersion	0
+SizeOfCode		00005000
+SizeOfInitializedData	00005000
+SizeOfUninitializedData	00000000
+AddressOfEntryPoint	00001045
+BaseOfCode		00001000
+BaseOfData		00006000
+ImageBase		00400000
+SectionAlignment	00001000
+FileAlignment		00001000
+MajorOSystemVersion	4
+MinorOSystemVersion	0
+MajorImageVersion	0
+MinorImageVersion	0
+MajorSubsystemVersion	4
+MinorSubsystemVersion	0
+Win32Version		00000000
+SizeOfImage		0000b000
+SizeOfHeaders		00001000
+CheckSum		00000000
+Subsystem		00000003	(Windows CUI)
+DllCharacteristics	00000000
+SizeOfStackReserve	00100000
+SizeOfStackCommit	00001000
+SizeOfHeapReserve	00100000
+SizeOfHeapCommit	00001000
+LoaderFlags		00000000
+NumberOfRvaAndSizes	00000010
+
+The Data Directory
+Entry 0 00000000 00000000 Export Directory [.edata (or where ever we found it)]
+Entry 1 000064bc 00000028 Import Directory [parts of .idata]
+Entry 2 00000000 00000000 Resource Directory [.rsrc]
+Entry 3 00000000 00000000 Exception Directory [.pdata]
+Entry 4 00000000 00000000 Security Directory
+Entry 5 00000000 00000000 Base Relocation Directory [.reloc]
+Entry 6 00000000 00000000 Debug Directory
+Entry 7 00000000 00000000 Description Directory
+Entry 8 00000000 00000000 Special Directory
+Entry 9 00000000 00000000 Thread Storage Directory [.tls]
+Entry a 00000000 00000000 Load Configuration Directory
+Entry b 00000000 00000000 Bound Import Directory
+Entry c 00006000 000000b0 Import Address Table Directory
+Entry d 00000000 00000000 Delay Import Directory
+Entry e 00000000 00000000 CLR Runtime Header
+Entry f 00000000 00000000 Reserved
+
+There is an import table in .rdata at 0x4064bc
+
+The Import Tables (interpreted .rdata section contents)
+ vma:            Hint    Time      Forward  DLL       First
+                 Table   Stamp     Chain    Name      Thunk
+ 000064bc	000064e4 00000000 00000000 00006882 00006000
+
+	DLL Name: KERNEL32.dll
+	vma:  Hint/Ord Member-Name Bound-To
+	6594	  202  GetCommandLineA
+	65a6	  372  GetVersion
+	65b4	  125  ExitProcess
+	65c2	  670  TerminateProcess
+	65d6	  247  GetCurrentProcess
+	65ea	  685  UnhandledExceptionFilter
+	6606	  292  GetModuleFileNameA
+	661c	  178  FreeEnvironmentStringsA
+	6636	  179  FreeEnvironmentStringsW
+	6650	  722  WideCharToMultiByte
+	6666	  262  GetEnvironmentStrings
+	667e	  264  GetEnvironmentStringsW
+	6698	  621  SetHandleCount
+	66aa	  338  GetStdHandle
+	66ba	  277  GetFileType
+	66c8	  336  GetStartupInfoA
+	66da	  294  GetModuleHandleA
+	66ee	  265  GetEnvironmentVariableA
+	6708	  373  GetVersionExA
+	6718	  413  HeapDestroy
+	6726	  411  HeapCreate
+	6734	  703  VirtualFree
+	6742	  415  HeapFree
+	674e	  559  RtlUnwind
+	675a	  735  WriteFile
+	6766	  409  HeapAlloc
+	6772	  191  GetCPInfo
+	677e	  185  GetACP
+	6788	  305  GetOEMCP
+	6794	  699  VirtualAlloc
+	67a4	  418  HeapReAlloc
+	67b2	  318  GetProcAddress
+	67c4	  450  LoadLibraryA
+	67d4	  282  GetLastError
+	67e4	  170  FlushFileBuffers
+	67f8	  618  SetFilePointer
+	680a	  484  MultiByteToWideChar
+	6820	  447  LCMapStringA
+	6830	  448  LCMapStringW
+	6840	  339  GetStringTypeA
+	6852	  342  GetStringTypeW
+	6864	  636  SetStdHandle
+	6874	   27  CloseHandle
+
+ 000064d0	00000000 00000000 00000000 00000000 00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000048a8  00401000  00401000  00001000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .rdata        00000890  00406000  00406000  00006000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .data         00003000  00407000  00407000  00007000  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+SYMBOL TABLE:
+no symbols
+
+

@@ -1,0 +1,88 @@
+
+hello.obj:     file format pe-i386
+hello.obj
+architecture: i386, flags 0x0000003d:
+HAS_RELOC, HAS_LINENO, HAS_DEBUG, HAS_SYMS, HAS_LOCALS
+start address 0x00000000
+
+Characteristics 0x0
+
+Time/Date		Mon Oct 13 14:56:57 2008
+Magic			0000
+MajorLinkerVersion	0
+MinorLinkerVersion	0
+SizeOfCode		00000000
+SizeOfInitializedData	00000000
+SizeOfUninitializedData	00000000
+AddressOfEntryPoint	00000000
+BaseOfCode		00000000
+BaseOfData		00000000
+ImageBase		00000000
+SectionAlignment	00000000
+FileAlignment		00000000
+MajorOSystemVersion	0
+MinorOSystemVersion	0
+MajorImageVersion	0
+MinorImageVersion	0
+MajorSubsystemVersion	0
+MinorSubsystemVersion	0
+Win32Version		00000000
+SizeOfImage		00000000
+SizeOfHeaders		00000000
+CheckSum		00000000
+Subsystem		00000000	(unspecified)
+DllCharacteristics	00000000
+SizeOfStackReserve	00000000
+SizeOfStackCommit	00000000
+SizeOfHeapReserve	00000000
+SizeOfHeapCommit	00000000
+LoaderFlags		00000000
+NumberOfRvaAndSizes	00000000
+
+The Data Directory
+Entry 0 00000000 00000000 Export Directory [.edata (or where ever we found it)]
+Entry 1 00000000 00000000 Import Directory [parts of .idata]
+Entry 2 00000000 00000000 Resource Directory [.rsrc]
+Entry 3 00000000 00000000 Exception Directory [.pdata]
+Entry 4 00000000 00000000 Security Directory
+Entry 5 00000000 00000000 Base Relocation Directory [.reloc]
+Entry 6 00000000 00000000 Debug Directory
+Entry 7 00000000 00000000 Description Directory
+Entry 8 00000000 00000000 Special Directory
+Entry 9 00000000 00000000 Thread Storage Directory [.tls]
+Entry a 00000000 00000000 Load Configuration Directory
+Entry b 00000000 00000000 Bound Import Directory
+Entry c 00000000 00000000 Import Address Table Directory
+Entry d 00000000 00000000 Delay Import Directory
+Entry e 00000000 00000000 CLR Runtime Header
+Entry f 00000000 00000000 Reserved
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .drectve      00000026  00000000  00000000  0000008c  2**0
+                  CONTENTS, READONLY, DEBUGGING, EXCLUDE
+  1 .text         00000014  00000000  00000000  000000b2  2**4
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  2 .data         0000000f  00000000  00000000  000000da  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+SYMBOL TABLE:
+[  0](sec -2)(fl 0x00)(ty   0)(scl 103) (nx 1) 0x00000000 hello.cpp
+File 
+[  2](sec -1)(fl 0x00)(ty   0)(scl   3) (nx 0) 0x000b2306 @comp.id
+[  3](sec  1)(fl 0x00)(ty   0)(scl   3) (nx 1) 0x00000000 .drectve
+AUX scnlen 0x26 nreloc 0 nlnno 0
+[  5](sec  2)(fl 0x00)(ty   0)(scl   3) (nx 1) 0x00000000 .text
+AUX scnlen 0x14 nreloc 2 nlnno 0 checksum 0xf829d91c assoc 0 comdat 0
+[  7](sec  2)(fl 0x00)(ty  20)(scl   2) (nx 0) 0x00000000 _main
+[  8](sec  0)(fl 0x00)(ty  20)(scl   2) (nx 0) 0x00000000 _printf
+[  9](sec  3)(fl 0x00)(ty   0)(scl   3) (nx 1) 0x00000000 .data
+AUX scnlen 0xf nreloc 0 nlnno 0 checksum 0x16c6219b assoc 0 comdat 0
+[ 11](sec  3)(fl 0x00)(ty   0)(scl   3) (nx 0) 0x00000000 $SG577
+
+
+RELOCATION RECORDS FOR [.text]:
+OFFSET   TYPE              VALUE 
+00000004 dir32             $SG577
+00000009 DISP32            _printf
+
+
