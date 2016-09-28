@@ -13,8 +13,65 @@
 Способы препроцессирования:
 1) Bulk (все закачали, обработал и выдали результат)
 2) По строкам - обрабатываются строка за строкой из выдачи objdump (возможна вставка других строк)
-
+                                                                                                      
 Способы задания конфигурации:
 1) JS
 2) XML как структуры данных для загрузки через JS
 3) Задание конфиг данных в виде файлов в директориях и/или zip
+
+Environment
+1) Путь до тулов
+2) Имена исполняемых файлов
+3) PATH/ENV
+
+Навигация
+1) Поиск в сгенерированных документах
+2) Показ документа в динамическом окне (по результату поиска)
+3) Обрезание показываемых данных, выходящих за окно просмотра (?)
+4) Поисковые линки (из выдачи objdump'а)
+5) Persistent История (дерево с пользовательскими метками)
+
+--------------------------------------------------------------------------------------------------------
+
+Environment
+
+getVar('var name')
+.logLevel : <N>
+.logFile : 'file'
+
+---------------------------------------
+
+
+object Executer
+
+.config
+ .common = ['$(PATH)','$(EXE_NAME=objdump)']
+ .sections = {
+   globHeader : '-h $(INP_FILE)',
+   ...
+ }
+
+exec(<section name>,{ vars ... } [, { options ... }]) -> LinesStream
+  Options:
+   MustSucceed : true
+
+
+object LinesStream
+
+getLine() -> 'string' (or throw exception StreamError)
+getLines() -> {exitCode: <N>, lines: [lines...]}
+kill()
+getExitCode() -> <N> | null
+isEOF() -> false/true
+
+object StreamError
+
+getReason() -> 'EOF' | 'Error'
+getExitCode() -> <N> | null
+
+-------------------------------------------------
+
+Autodetect()
+-------------------------------------------------
+
+object ViewTranslator
