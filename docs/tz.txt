@@ -33,21 +33,23 @@ Environment
 
 --------------------------------------------------------------------------------------------------------
 
-Environment
+object Environment (global, predefined)
 
 getVar('var name')
 .logLevel : <N>
 .logFile : 'file'
+addGlobObj('name',object)
+getGlobObj('name')
 
 ---------------------------------------
 
 
-object Executer
+object Executer (global, from config)
 
 .config
  .common = ['$(PATH)','$(EXE_NAME=objdump)']
  .sections = {
-   globHeader : '-h $(INP_FILE)',
+   globHeader : '-h ${OPTS=) $(INP_FILE)',
    ...
  }
 
@@ -74,4 +76,41 @@ getExitCode() -> <N> | null
 Autodetect()
 -------------------------------------------------
 
-object ViewTranslator
+object ViewConfigSet (global, from config)
+<view name> => object ViewConfig
+
+object ViewConfig
+.config
+ .viewTranslatorConfig = {...} // config data for viewTranslator
+ .viewTranslator = constructor of object derived from ViewTranslator or one of predefined
+ .gui = QML() or null // Optional QML dialog
+ .execDriverConfig = {...} // config data for execDriver
+ .execDriver = constructor of object derived from ExecDriver or one of predefined
+
+
+object ViewTranslator (can be specified in config as derived Object)
+
+constructor: (LinesStream, ViewConfig)
+
+getHeader() -> string
+getBody() -> LinesStreamEx
+getFooter() -> string
+getFindCriteria() -> [ 'criteria', ... ]
+
+LinesStreamEx
+getLineInfo() -> LineInfo / null
+
+object LineInfo
+canSplit() -> true if current line can start new HTML block
+getFindToks(<criteria>) -> [ 'tok1', 'tok2', ... ]
+getLine() -> string
+
+
+object ExecDriver (can be specified in config as derived Object)
+
+constructor: (ViewConfig)
+
+getLines() -> LinesStream
+
+config process: TBD
+ 
