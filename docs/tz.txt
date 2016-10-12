@@ -40,6 +40,7 @@ getVar('var name')
 .logFile : 'file'
 addGlobObj('name',object)
 getGlobObj('name')
+loadConfig('XML Path')
 
 ---------------------------------------
 
@@ -86,7 +87,7 @@ object ViewConfig
  .gui = QML() or null // Optional QML dialog
  .execDriverConfig = {...} // config data for execDriver
  .execDriver = constructor of object derived from ExecDriver or one of predefined
-
+postLoad()
 
 object ViewTranslator (can be specified in config as derived Object)
 
@@ -114,3 +115,65 @@ getLines() -> LinesStream
 
 config process: TBD
  
+-------------------------------------------------------------------------------
+<root title='objdump tool'>
+
+  <field name="executer.config" type="Object" method="add">
+    <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
+    <field name="sections" type="Object" method="add">
+      <field name="globHeader" type="String" method="assign">-h ${OPTS=) $(INP_FILE)</field>
+...
+    </field>
+  </field>
+
+  <JS>
+    var lines = executer.exec('globHeader');
+    for(var l of lines)
+    {
+      if (l.match(/file format elf/) !== null) {environment.loadConfig('/root/skip[@section=ElfConfig]'); break;}
+      if (l.match(/file format pe-/) !== null) {environment.loadConfig('/root/skip[@section=PEConfig]'); break;}
+    }
+  </JS>
+
+  <skip section='ElfConfig'>
+
+   <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
+    <field name="config" type="Object" method="add">
+     <field name="viewTranslator" type="PlainViewTranslator" method="assign"/>
+     <field name="execDriverConfig" type="JS">({sectionName:'globHeader'})</field>
+     <field name="execDriver" type="SimpleExecDriver"/>
+    </field>
+   </field>
+
+   <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
+     new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
+   </field>
+
+  </skip>
+
+  <skip section='PEConfig'>
+  </skip>
+
+</root>
+---------------------------------------------------------------------------------
+
+function ViewConfig(cfg_data)
+{
+  if (typeof(cfg_data) == 'undefined') {this.config={}; return;}
+  this.config = cfg_data;
+}
+
+ViewConfig.prototype = {
+  postLoad: function () {
+    if (!('viewTranslator' in this.config)) this.config.viewTranslator=PlainViewTranslator;
+    if (!('execDriver' in this.config)) this.config.execDriver=SimpleExecDriver;
+    this.execDriver = new this.config.execDriver(this);
+    if ('postLoad' in this.execDriver) this.execDriver.postLoad();
+  },
+  getViewTranslator: function (lines)
+  {
+    var rv = new this.config.viewTranslator(lines,this);
+    if ('postLoad' in rv) rv.postLoad();
+    return rv;
+  }
+};
