@@ -177,3 +177,6 @@ ViewConfig.prototype = {
     return rv;
   }
 };
+-------------------
+
+Qt 5.7
