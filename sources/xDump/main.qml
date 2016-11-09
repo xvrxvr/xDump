@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0
 import QtWebEngine 1.0
 import QtWebView 1.1
@@ -11,60 +12,58 @@ ApplicationWindow {
     height: 480
     title: qsTr("Hello World")
 
+
+
+
+
     ToolBar {
         id: toolBar
+        anchors.top: parent.top
         width: parent.width
+
         TabBar {
             id: tabBar
-            //anchors.top: toolBar.bottom
-            width: parent.width -addTabBtn.width
-            TabButton {
-                text: "0"
-                onClicked: webView.url = "https://www.google.ru/#newwindow=1&q=" + text
-                onDoubleClicked: tabBar.removeItem(tabBar.currentIndex);
-            }
+            anchors.fill: parent
+            property var tabCount: 1;
+
             TabButton {
                 text: "1"
                 onClicked: webView.url = "https://www.google.ru/#newwindow=1&q=" + text
-                onDoubleClicked: tabBar.removeItem(tabBar.currentIndex);
+                onDoubleClicked: {
+                    tabBar.removeItem(tabBar.currentIndex);
+                    tabBar.tabCount -= 1
+                }
             }
         }
     }
-
-    Component {
-        id: tabButton
-        TabButton {
-            text: "0"
-            onClicked: webView.url = "https://www.google.ru/#newwindow=1&q=" + text
-            onDoubleClicked: tabBar.removeItem(tabBar.currentIndex);
-        }
-    }
-
-    WebEngineView {
-        id: webView
-        url: "http://google.ru"
-        visible: true
-        anchors.top: toolBar.bottom
-        width: parent.width
-        height: parent.height - toolBar.height
-    }
-
 
     ToolBar {
         id: statusBar
         anchors.bottom: parent.bottom;
         width: parent.width
+
         Button {
             id: addTabBtn
             anchors.left: parent.left
             width: 50
             text: "+"
             onClicked: {
-                var obj = tabButton.createObject(tabBar)
-                obj.text = progressBar2.value
-                progressBar2.value += 1
+                var tab = tabButton.createObject(tabBar)
+                tab.text = tabBar.tabCount + 1
+                tabBar.tabCount += 1
             }
         }
+
+        Button {
+            id: showLeftPanelBtn
+            anchors.left: addTabBtn.right
+            width: 50
+            text: "+"
+            onClicked: {
+                leftPanel.visible = true
+            }
+        }
+
         ProgressBar {
             id: progressBar
             anchors.fill: parent
@@ -74,12 +73,28 @@ ApplicationWindow {
         }
     }
 
-    ProgressBar {
-        id: progressBar2
-        visible: false
-        from: 0
-        to: 100
-        value: 4
+    WebEngineView {
+        id: webView
+        url: "http://google.ru"
+        visible: true
+        anchors.top: toolBar.bottom
+        anchors.bottom: statusBar.top
+        width: parent.width
+    }
+
+    Component {
+        id: tabButton
+
+        TabButton {
+            text: "0"
+            onClicked: webView.url = "https://www.google.ru/#newwindow=1&q=" + text
+            onDoubleClicked: {
+                tabBar.removeItem(tabBar.currentIndex);
+                tabBar.tabCount -= 1
+            }
+        }
     }
 
 }
+
+
