@@ -180,3 +180,7 @@ ViewConfig.prototype = {
 -------------------
 
 Qt 5.7
+
+Используем qQMLApplicationEngine как JS движок
+
+WEB: WebEngineView от QTWebEngine 1.3
