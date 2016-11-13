@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quickcontrols2 webengine webview
+QT += qml quickcontrols2 webengine
 CONFIG += c++11
 
 SOURCES += main.cpp
