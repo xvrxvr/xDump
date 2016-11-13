@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>MainForm.ui.qml</file>
-        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>
