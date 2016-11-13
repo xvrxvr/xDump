@@ -27,27 +27,30 @@ ApplicationWindow {
             title: "Actions"
             MenuItem {
                 text: "Add tab"
+                shortcut: "Ctrl+T"
                 onTriggered: {
                     var tab = tabComponent.createObject(tabBar)
                     tab.title = "tab_" + (tabBar.count - 1)
                     tabBar.currentIndex = tabBar.count - 1
+                    webView.url = "https://www.google.ru/#q=" + getTab(currentIndex).title
                 }
             }
             MenuItem {
                 text: "Delete tab"
-                onTriggered: {
+                shortcut: "Ctrl+W"
+                onTriggered:
                     if (tabBar.count > 0) {
                         tabBar.removeTab(tabBar.currentIndex)
                         var index = tabBar.currentIndex
                         tabBar.currentIndex = 0
                         tabBar.currentIndex = index
-                    }
                 }
             }
             MenuItem {
-                text: "Toggle left panel"
+                text: "Toggle search panel"
+                shortcut: "Ctrl+F"
                 onTriggered: {
-                    leftPanel.visible = !leftPanel.visible
+                    searchPanel.visible = !searchPanel.visible
                 }
             }
         }
@@ -96,7 +99,7 @@ ApplicationWindow {
         width: parent.width
 
         Rectangle {
-            id: leftPanel
+            id: searchPanel
             visible: false
             width: 250
             Layout.maximumWidth: 250
@@ -106,8 +109,8 @@ ApplicationWindow {
 
         WebEngineView {
             id: webView
-            url: "https://www.google.ru/#q=" + parent.width / 2
-            visible: true
+            url: "https://www.google.ru/#q=Main"
+            visible: (tabBar.count != 0)
             Layout.fillWidth: true
         }
     }
@@ -137,46 +140,11 @@ ApplicationWindow {
             }
         }
 
-        /*temp buttons begin*/
-
-        Button {
-            id: delTabBtn
-            anchors.top: parent.top
-            anchors.left: addTabBtn.right
-            width: parent.height
-            height: parent.height
-            text: " - "
-
-            onClicked: {
-                if (tabBar.count > 0) {
-                    tabBar.removeTab(tabBar.currentIndex)
-                    var index = tabBar.currentIndex
-                    tabBar.currentIndex = 0
-                    tabBar.currentIndex = index
-                }
-            }
-        }
-
-        Button {
-            id: toggleLeftPanelBtn
-            anchors.top: parent.top
-            anchors.left: delTabBtn.right
-            width: parent.height
-            height: parent.height
-            text: "LP"
-
-            onClicked: {
-                leftPanel.visible = !leftPanel.visible
-            }
-        }
-
-        /*Temp buttons end*/
-
         ProgressBar {
             id: progressBar
             anchors.top: parent.top
-            anchors.left: toggleLeftPanelBtn.right
-            width: parent.width - addTabBtn.width - delTabBtn.width - toggleLeftPanelBtn.width
+            anchors.left: toggleSearchPanelBtn.right
+            width: parent.width - addTabBtn.width - delTabBtn.width - toggleSearchPanelBtn.width
             height: parent.height
             minimumValue: 0
             maximumValue: 100
