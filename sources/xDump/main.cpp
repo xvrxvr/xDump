@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QtWebEngine/QtWebEngine>
 
+#include <error_handler.h>
 
 int main(int argc, char *argv[])
 {
