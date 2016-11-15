@@ -12,7 +12,6 @@ class ConfigParser
 {
 public:
     ConfigParser(QJSEngine &_jsEngine) : jsEngine(_jsEngine) {}
-
     void parseConfig(QString inputFile = "");
 
 private:
@@ -25,7 +24,6 @@ private:
         QString qGetName ();
         QString qGetType ();
         QString qGetMethod ();
-        void dump();
 
     private:
         QString name;

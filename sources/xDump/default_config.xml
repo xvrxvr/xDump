@@ -7,10 +7,6 @@
         </field>
     </field>
 
-    <JS>
-        console.log("Hello from XML")
-    </JS>
-
     <skip section='ElfConfig'>
         <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
             <field name="config" type="Object" method="add">

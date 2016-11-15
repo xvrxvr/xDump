@@ -8,6 +8,7 @@
 #include <config_parser.h>
 
 namespace xDump {
+
 QString ConfigParser::defaultConfigFileName = ":/default_config.xml";
 
 void ConfigParser::parseConfig(QString inputFile)
@@ -31,29 +32,25 @@ void ConfigParser::parseConfig(QString inputFile)
 
     QDomElement docElem = doc.documentElement();
     parseXmlElements(docElem, ConfigElementAttributes());
+    ErrorHandler::checkState();
 }
 
 void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes)
 {
     QDomNode n = docElem.firstChild();
     while(!n.isNull()) {
-        //std::cout << "Node: " << qPrintable(n.nodeName()) << std::endl;
-        //std::cout << "Child: " << n.hasChildNodes() << " : " << n.lineNumber() << " : " << n.columnNumber() << std::endl;
         QDomElement e = n.toElement();
         if(!e.isNull()) {
             if (e.tagName() == "field") {
-                //std::cout << "Tag: " << qPrintable(e.tagName()) << std::endl;
-                //std::cout << "Child: " << n.hasChildNodes() << std::endl;
-                //ConfigElementAttributes(parentAttributes, e.attributes()).dump();
-                //std::cout << "FText: " << qPrintable(e.text()) << std::endl;
+                //Check whether the node has text. We need it for "assign" method.
                 QDomNode childNode = n.firstChild();
-                //std::cout << "childNode: " << childNode.isNull() << " " << qPrintable(childNode.nodeName()) << std::endl;
                 QString childText = "";
                 if (!childNode.isNull() && !childNode.toText().isNull())
                     childText = childNode.toText().data();
                 addXmlToJsEngine(ConfigElementAttributes(parentAttributes, e.attributes()), childText);
                 parseXmlElements(n, ConfigElementAttributes(parentAttributes, e.attributes()));
             } else if (e.tagName() == "JS") {
+                //Get text from child node and evaluate it
                 QDomNode childNode = n.firstChild();
                 QString childText = "";
                 if (childNode.isNull() || childNode.toText().isNull()) {
@@ -63,25 +60,19 @@ void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes pa
                 childText = childNode.toText().data();
                 jsEngine.evaluate(childText);
             } else if (e.tagName() == "skip") {
-
+                //TODO
             } else {
                 ErrorHandler::reportError("Unrecognuzed tag name: " + e.tagName(),
                                           ErrorHandler::fatal, __FILE__, __LINE__);
             }
         }
-        //QDomText t = n.toText();
-        //if(!t.isNull()) {
-        //    std::cout << "Has text: " << qPrintable(n.nodeName()) << std::endl;
-            //    addXmlToJsEngine(parentAttributes, t.data());
-        //}
         n = n.nextSibling();
     }
 }
 
 void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString text)
 {
-    //std::cout << "List: " << qPrintable(attributes.qGetName()) << std::endl;
-    //Check whether all nodes exist in hierarchy
+    //Check whether all parent nodes exist in hierarchy
     QStringList parentObjectHierarchy = attributes.qGetName().split(".");
     QJSValue parentObject = jsEngine.globalObject();
     for (int i = 0; i < parentObjectHierarchy.size() - 1; ++i) {
@@ -92,10 +83,10 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
         }
         parentObject = parentObject.property(parentObjectHierarchy.at(i));
     }
-    std::cout << qPrintable(parentObjectHierarchy.last()) << std::endl;
 
     QJSValue lastSuccessor = parentObject;
     if (attributes.qGetMethod() == "add") {
+        //If object exists, it should have specified type. Otherwise, we create it.
         if (parentObject.hasProperty(parentObjectHierarchy.last())) {
             lastSuccessor = parentObject.property(parentObjectHierarchy.last());
             QJSValue instanceof = jsEngine.evaluate(attributes.qGetName() + " instanceof " + attributes.qGetType());
@@ -112,10 +103,8 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
     }
 
     if (attributes.qGetMethod() == "assign") {
-        std::cout << "type: " << qPrintable(attributes.qGetType()) << std::endl;
-        std::cout << "text: " << qPrintable(text) << std::endl;
         if (attributes.qGetType() == "JS") {
-            //TODO: check evaluation
+            //If type is JS - just evaluate text
             lastSuccessor.setProperty(parentObjectHierarchy.last(), jsEngine.evaluate(text));
             return;
         } else {
@@ -134,13 +123,10 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
 
 ConfigParser::ConfigElementAttributes::ConfigElementAttributes(QDomNamedNodeMap attributesMap)
 {
-    //std::cout << "Name: " << qPrintable(elem.tagName()) << std::endl;
-    //std::cout << "Text: " << qPrintable(elem.text()) << std::endl;
     for (auto i = 0; i < attributesMap.length(); ++i) {
         QDomNode attrNode = attributesMap.item(i);
         if (attrNode.isAttr()) {
             QDomAttr attr = attrNode.toAttr();
-            //std::cout << "Field: " << qPrintable(attr.name()) <<  " = " << qPrintable(attr.value()) << std::endl;
             if (attr.name() == "name")
                 name = attr.value();
             if (attr.name() == "type")
@@ -173,13 +159,5 @@ QString ConfigParser::ConfigElementAttributes::qGetMethod()
 {
     return method;
 }
-
-void ConfigParser::ConfigElementAttributes::dump()
-{
-    std::cout << "Name: "   << qPrintable(name) << std::endl;
-    std::cout << "Type: "   << qPrintable(type) << std::endl;
-    std::cout << "Method: " << qPrintable(method) << std::endl;
-}
-
 
 }

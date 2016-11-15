@@ -26,7 +26,7 @@ public:
     static void checkState ();
 
 private:
-    static uint32_t fatalCount;
+    static bool invalidState;
     static Severity defaultSeverity;
 };
 

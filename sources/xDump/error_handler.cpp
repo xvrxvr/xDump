@@ -4,7 +4,7 @@
 #include <error_handler.h>
 
 namespace xDump {
-    uint32_t ErrorHandler::fatalCount = 0;
+    bool ErrorHandler::invalidState = false;
     ErrorHandler::Severity ErrorHandler::defaultSeverity = ErrorHandler::warning;
 
 void ErrorHandler::reportError(QString message, Severity severity, const char* file, uint64_t line)
@@ -19,7 +19,7 @@ void ErrorHandler::reportError(QString message, Severity severity, const char* f
             break;
         case fatal:
             buffer += "Fatal error";
-            fatalCount++;
+            invalidState = true;
             break;
         case internal:
             buffer += "Internal error";
@@ -42,7 +42,7 @@ void ErrorHandler::reportError(QString message, Severity severity, const char* f
 
 void ErrorHandler::checkState()
 {
-    if (fatalCount > 0)
+    if (invalidState)
         exit(0);
 }
 }
