@@ -7,6 +7,20 @@
         </field>
     </field>
 
+    <JS>
+        var lines = executer.exec('globHeader');
+        for (var l of lines) {
+            if (l.match(/file format elf/) !== null) {
+                parseConfig(':/default_config.xml', 'ElfConfig');
+                break;
+            }
+            if (l.match(/file format pe-/) !== null) {
+                parseConfig(':/default_config.xml', 'PEConfig');
+                break;
+            }
+        }
+    </JS>
+
     <skip section='ElfConfig'>
         <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
             <field name="config" type="Object" method="add">
@@ -19,6 +33,9 @@
         <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
             new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
         </field>
+    </skip>
+
+    <skip section='PEConfig'>
     </skip>
 
 </root>
