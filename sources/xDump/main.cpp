@@ -13,7 +13,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QtWebEngine::initialize();
 
-    // Create global executer.config Object
+    // Create global executer.config Object.
+    //TODO: Delete this section later!
     QJSValue executer = engine.newObject();
     executer.setProperty("executer", engine.evaluate("new Object()"));
     QJSValue globalObject = engine.globalObject();
@@ -25,6 +26,11 @@ int main(int argc, char *argv[])
 
     xDump::ConfigParser configParser(engine);
     configParser.parseConfig();
+
+    xDump::ConfigParserBridge configParserBridge (configParser);
+    QJSValue jsConfigParserBridge = engine.newQObject(&configParserBridge);
+    QJSValue jsParseConfig = jsConfigParserBridge.property("transferToParser");
+    globalObject.setProperty("parseConfig", jsParseConfig);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

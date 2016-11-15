@@ -11,7 +11,7 @@ namespace xDump {
 
 QString ConfigParser::defaultConfigFileName = ":/default_config.xml";
 
-void ConfigParser::parseConfig(QString inputFile)
+void ConfigParser::parseConfig(QString inputFile, QString section)
 {
     QDomDocument doc("mydocument");
     QFile file(inputFile == "" ? defaultConfigFileName : inputFile);
@@ -31,39 +31,47 @@ void ConfigParser::parseConfig(QString inputFile)
     file.close();
 
     QDomElement docElem = doc.documentElement();
-    parseXmlElements(docElem, ConfigElementAttributes());
+    parseXmlElements(docElem, ConfigElementAttributes(), section);
     ErrorHandler::checkState();
 }
 
-void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes)
+void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes, QString section)
 {
     QDomNode n = docElem.firstChild();
     while(!n.isNull()) {
         QDomElement e = n.toElement();
         if(!e.isNull()) {
-            if (e.tagName() == "field") {
-                //Check whether the node has text. We need it for "assign" method.
-                QDomNode childNode = n.firstChild();
-                QString childText = "";
-                if (!childNode.isNull() && !childNode.toText().isNull())
+            if (section == "") {
+                if (e.tagName() == "field") {
+                    //Check whether the node has text. We need it for "assign" method.
+                    QDomNode childNode = n.firstChild();
+                    QString childText = "";
+                    if (!childNode.isNull() && !childNode.toText().isNull())
+                        childText = childNode.toText().data();
+                    addXmlToJsEngine(ConfigElementAttributes(parentAttributes, e.attributes()), childText);
+                    parseXmlElements(n, ConfigElementAttributes(parentAttributes, e.attributes()));
+                } else if (e.tagName() == "JS") {
+                    //Get text from child node and evaluate it
+                    QDomNode childNode = n.firstChild();
+                    QString childText = "";
+                    if (childNode.isNull() || childNode.toText().isNull()) {
+                        ErrorHandler::reportError("JS tag should have text",
+                                                  ErrorHandler::fatal, __FILE__, __LINE__);
+                    }
                     childText = childNode.toText().data();
-                addXmlToJsEngine(ConfigElementAttributes(parentAttributes, e.attributes()), childText);
-                parseXmlElements(n, ConfigElementAttributes(parentAttributes, e.attributes()));
-            } else if (e.tagName() == "JS") {
-                //Get text from child node and evaluate it
-                QDomNode childNode = n.firstChild();
-                QString childText = "";
-                if (childNode.isNull() || childNode.toText().isNull()) {
-                    ErrorHandler::reportError("JS tag should have text",
+                    jsEngine.evaluate(childText);
+                } else if (e.tagName() == "skip") {
+                } else {
+                    ErrorHandler::reportError("Unrecognuzed tag name: " + e.tagName(),
                                               ErrorHandler::fatal, __FILE__, __LINE__);
                 }
-                childText = childNode.toText().data();
-                jsEngine.evaluate(childText);
-            } else if (e.tagName() == "skip") {
-                //TODO
             } else {
-                ErrorHandler::reportError("Unrecognuzed tag name: " + e.tagName(),
-                                          ErrorHandler::fatal, __FILE__, __LINE__);
+                if (e.tagName() == "skip") {
+                    QString skipSectionName = e.attribute("section");
+                    if (skipSectionName == section) {
+                        parseXmlElements(n, ConfigElementAttributes());
+                    }
+                }
             }
         }
         n = n.nextSibling();
