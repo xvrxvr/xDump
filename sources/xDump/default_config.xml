@@ -1,0 +1,28 @@
+<root title='objdump tool'>
+
+    <field name="executer.config" type="Object" method="add">
+        <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
+        <field name="sections" type="Object" method="add">
+            <field name="globHeader" type="String" method="assign">-h ${OPTS=) $(INP_FILE)</field>
+        </field>
+    </field>
+
+    <JS>
+        console.log("Hello from XML")
+    </JS>
+
+    <skip section='ElfConfig'>
+        <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="PlainViewTranslator" method="assign"/>
+                <field name="execDriverConfig" type="JS">({sectionName:'globHeader'})</field>
+                <field name="execDriver" type="SimpleExecDriver" method="assign"/>
+            </field>
+        </field>
+
+        <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
+            new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
+        </field>
+    </skip>
+
+</root>

@@ -4,10 +4,10 @@
 #include <error_handler.h>
 
 namespace xDump {
-    uint32_t errorHandler::fatalCount = 0;
-    errorHandler::Severity errorHandler::defaultSeverity = errorHandler::warning;
+    uint32_t ErrorHandler::fatalCount = 0;
+    ErrorHandler::Severity ErrorHandler::defaultSeverity = ErrorHandler::warning;
 
-void errorHandler::reportError(QString message, Severity severity, const char* file, uint64_t line)
+void ErrorHandler::reportError(QString message, Severity severity, const char* file, uint64_t line)
 {
     QString buffer = "";
     switch (severity) {
@@ -40,7 +40,7 @@ void errorHandler::reportError(QString message, Severity severity, const char* f
         exit(0);
 }
 
-void errorHandler::checkState()
+void ErrorHandler::checkState()
 {
     if (fatalCount > 0)
         exit(0);

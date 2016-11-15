@@ -8,7 +8,7 @@
 
 namespace xDump {
 
-class errorHandler
+class ErrorHandler
 {
 public:
     enum Severity
