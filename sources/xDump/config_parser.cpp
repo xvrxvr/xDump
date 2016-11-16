@@ -4,8 +4,8 @@
 #include <QDomDocument>
 #include <QFile>
 
-#include <error_handler.h>
-#include <config_parser.h>
+#include "error_handler.h"
+#include "config_parser.h"
 
 namespace xDump {
 
@@ -96,7 +96,6 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
     if (attributes.qGetMethod() == "add") {
         //If object exists, it should have specified type. Otherwise, we create it.
         if (parentObject.hasProperty(parentObjectHierarchy.last())) {
-            lastSuccessor = parentObject.property(parentObjectHierarchy.last());
             QJSValue instanceof = jsEngine.evaluate(attributes.qGetName() + " instanceof " + attributes.qGetType());
             if (!instanceof.toBool()) {
                 ErrorHandler::reportError("Object " + attributes.qGetName() + " should be instanceof " + attributes.qGetType(),

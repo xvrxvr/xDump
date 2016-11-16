@@ -3,9 +3,6 @@
 
 #include <QDomNamedNodeMap>
 #include <QJSEngine>
-#include <QObject>
-
-#include <error_handler.h>
 
 namespace xDump {
 
@@ -38,18 +35,6 @@ private:
 
     static QString defaultConfigFileName;
     QJSEngine &jsEngine;
-};
-
-class ConfigParserBridge : public QObject {
-    Q_OBJECT
-public:
-    ConfigParserBridge(ConfigParser &_parser) : QObject (), parser(_parser) {}
-    Q_INVOKABLE void transferToParser(QString file, QString section = "") {
-        parser.parseConfig(file, section);
-    }
-
-private:
-    ConfigParser &parser;
 };
 
 }

@@ -4,8 +4,9 @@
 #include <QQmlApplicationEngine>
 #include <QtWebEngine/QtWebEngine>
 
-#include <error_handler.h>
-#include <config_parser.h>
+#include "error_handler.h"
+#include "config_parser.h"
+#include "system_bridge.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,9 +28,9 @@ int main(int argc, char *argv[])
     xDump::ConfigParser configParser(engine);
     configParser.parseConfig();
 
-    xDump::ConfigParserBridge configParserBridge (configParser);
-    QJSValue jsConfigParserBridge = engine.newQObject(&configParserBridge);
-    QJSValue jsParseConfig = jsConfigParserBridge.property("transferToParser");
+    xDump::SystemBridge systemBridge (configParser);
+    QJSValue jsSystemBridge = engine.newQObject(&systemBridge);
+    QJSValue jsParseConfig = jsSystemBridge.property("transferToParser");
     globalObject.setProperty("parseConfig", jsParseConfig);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
