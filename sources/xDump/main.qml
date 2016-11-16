@@ -32,7 +32,7 @@ ApplicationWindow {
                     var tab = tabComponent.createObject(tabBar)
                     tab.title = "tab_" + (tabBar.count - 1)
                     tabBar.currentIndex = tabBar.count - 1
-                    webView.url = "https://www.google.ru/#q=" + getTab(currentIndex).title
+                    webView.url = "https://www.google.ru/#q=" + getTab(tabBar.currentIndex).title
                 }
             }
             MenuItem {
