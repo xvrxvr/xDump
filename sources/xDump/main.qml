@@ -125,26 +125,9 @@ ApplicationWindow {
         width: parent.width
         height: 25
 
-        Button {
-            id: addTabBtn
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: parent.height
-            height: parent.height
-            text: " + "
-
-            onClicked: {
-                var tab = tabComponent.createObject(tabBar)
-                tab.title = "tab_" + (tabBar.count - 1)
-                tabBar.currentIndex = tabBar.count - 1
-            }
-        }
-
         ProgressBar {
             id: progressBar
-            anchors.top: parent.top
-            anchors.left: toggleSearchPanelBtn.right
-            width: parent.width - addTabBtn.width - delTabBtn.width - toggleSearchPanelBtn.width
+            anchors.fill: parent
             height: parent.height
             minimumValue: 0
             maximumValue: 100
