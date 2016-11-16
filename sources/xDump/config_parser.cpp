@@ -130,18 +130,9 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
 
 ConfigParser::ConfigElementAttributes::ConfigElementAttributes(QDomNamedNodeMap attributesMap)
 {
-    for (auto i = 0; i < attributesMap.length(); ++i) {
-        QDomNode attrNode = attributesMap.item(i);
-        if (attrNode.isAttr()) {
-            QDomAttr attr = attrNode.toAttr();
-            if (attr.name() == "name")
-                name = attr.value();
-            if (attr.name() == "type")
-                type = attr.value();
-            if (attr.name() == "method")
-                method = attr.value();
-        }
-    }
+    name = attributesMap.namedItem("name").toAttr().value();
+    type = attributesMap.namedItem("type").toAttr().value();
+    method = attributesMap.namedItem("method").toAttr().value();
 }
 
 ConfigParser::ConfigElementAttributes::ConfigElementAttributes(ConfigElementAttributes parentAttributes,
