@@ -3,6 +3,7 @@
 #include <QDomNamedNodeMap>
 #include <QDomDocument>
 #include <QFile>
+#include <QXmlQuery>
 
 #include "error_handler.h"
 #include "config_parser.h"
@@ -13,15 +14,30 @@ QString ConfigParser::defaultConfigFileName = ":/default_config.xml";
 
 void ConfigParser::parseConfig(QString inputFile, QString section)
 {
-    QDomDocument doc("mydocument");
-    QFile file(inputFile == "" ? defaultConfigFileName : inputFile);
+    QString fileToOpen = inputFile == "" ? defaultConfigFileName : inputFile;
+    QFile file(fileToOpen);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text )) {
         ErrorHandler::reportError("Failed to open file for reading.",
                                   ErrorHandler::fatal, __FILE__, __LINE__);
         ErrorHandler::checkState();
         return;
     }
-    if (!doc.setContent(&file)) {
+
+    QXmlQuery query;
+    query.setFocus(&file);
+    query.setQuery(section == "" ? "root" : section); // Example: query.setQuery("/root/skip[@section='ElfConfig']");
+    if (!query.isValid()) {
+        ErrorHandler::reportError("Invalid query for " + fileToOpen,
+                                  ErrorHandler::fatal, __FILE__, __LINE__);
+        ErrorHandler::checkState();
+        return;
+    }
+    QString res;
+    query.evaluateTo(&res);
+    file.close();
+
+    QDomDocument doc;
+    if (!doc.setContent(res)) {
         file.close();
         ErrorHandler::reportError("Failed to parse the file into a DOM tree.",
                                   ErrorHandler::fatal, __FILE__, __LINE__);
@@ -31,47 +47,38 @@ void ConfigParser::parseConfig(QString inputFile, QString section)
     file.close();
 
     QDomElement docElem = doc.documentElement();
-    parseXmlElements(docElem, ConfigElementAttributes(), section);
+    parseXmlElements(docElem, ConfigElementAttributes());
     ErrorHandler::checkState();
 }
 
-void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes, QString section)
+void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes)
 {
     QDomNode n = docElem.firstChild();
     while(!n.isNull()) {
         QDomElement e = n.toElement();
         if(!e.isNull()) {
-            if (section == "") {
-                if (e.tagName() == "field") {
-                    //Check whether the node has text. We need it for "assign" method.
-                    QDomNode childNode = n.firstChild();
-                    QString childText = "";
-                    if (!childNode.isNull() && !childNode.toText().isNull())
-                        childText = childNode.toText().data();
-                    addXmlToJsEngine(ConfigElementAttributes(parentAttributes, e.attributes()), childText);
-                    parseXmlElements(n, ConfigElementAttributes(parentAttributes, e.attributes()));
-                } else if (e.tagName() == "JS") {
-                    //Get text from child node and evaluate it
-                    QDomNode childNode = n.firstChild();
-                    QString childText = "";
-                    if (childNode.isNull() || childNode.toText().isNull()) {
-                        ErrorHandler::reportError("JS tag should have text",
-                                                  ErrorHandler::fatal, __FILE__, __LINE__);
-                    }
+            if (e.tagName() == "field") {
+                //Check whether the node has text. We need it for "assign" method.
+                QDomNode childNode = n.firstChild();
+                QString childText = "";
+                if (!childNode.isNull() && !childNode.toText().isNull())
                     childText = childNode.toText().data();
-                    jsEngine.evaluate(childText);
-                } else if (e.tagName() == "skip") {
-                } else {
-                    ErrorHandler::reportError("Unrecognuzed tag name: " + e.tagName(),
+                addXmlToJsEngine(ConfigElementAttributes(parentAttributes, e.attributes()), childText);
+                parseXmlElements(n, ConfigElementAttributes(parentAttributes, e.attributes()));
+            } else if (e.tagName() == "JS") {
+                //Get text from child node and evaluate it
+                QDomNode childNode = n.firstChild();
+                QString childText = "";
+                if (childNode.isNull() || childNode.toText().isNull()) {
+                    ErrorHandler::reportError("JS tag should have text",
                                               ErrorHandler::fatal, __FILE__, __LINE__);
                 }
+                childText = childNode.toText().data();
+                jsEngine.evaluate(childText);
+            } else if (e.tagName() == "skip") {
             } else {
-                if (e.tagName() == "skip") {
-                    QString skipSectionName = e.attribute("section");
-                    if (skipSectionName == section) {
-                        parseXmlElements(n, ConfigElementAttributes());
-                    }
-                }
+                ErrorHandler::reportError("Unrecognuzed tag name: " + e.tagName(),
+                                          ErrorHandler::fatal, __FILE__, __LINE__);
             }
         }
         n = n.nextSibling();

@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quickcontrols2 webengine xml core
+QT += qml quickcontrols2 webengine xml core xmlpatterns
 CONFIG += c++11
 
 SOURCES += main.cpp \
