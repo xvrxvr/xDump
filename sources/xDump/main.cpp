@@ -26,12 +26,11 @@ int main(int argc, char *argv[])
     executerObject.setProperty("config", config);
 
     xDump::ConfigParser configParser(engine);
-    configParser.parseConfig();
-
     xDump::SystemBridge systemBridge (configParser);
     QJSValue jsSystemBridge = engine.newQObject(&systemBridge);
     QJSValue jsParseConfig = jsSystemBridge.property("transferToParser");
     globalObject.setProperty("parseConfig", jsParseConfig);
+    configParser.parseConfig();
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

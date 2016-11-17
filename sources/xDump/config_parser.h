@@ -29,7 +29,7 @@ private:
         QString method;
     };
 
-    void parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes, QString section = "");
+    void parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes);
     void addXmlToJsEngine(ConfigElementAttributes attributes, QString text = "");
     bool checkObjectHierarchy(QStringList objectHierarchy);
 
