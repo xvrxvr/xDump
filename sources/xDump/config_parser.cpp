@@ -122,8 +122,10 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
             lastSuccessor.setProperty(parentObjectHierarchy.last(), jsEngine.evaluate(text));
             return;
         } else {
-            if (attributes.qGetType() == "String")
-                text = "'" + text + "'";
+            if (attributes.qGetType() == "String") {
+                lastSuccessor.setProperty(parentObjectHierarchy.last(), QJSValue(text));
+                return;
+            }
             if (attributes.qGetType() == "Array")
                 text = "[" + text + "]";
             lastSuccessor.setProperty(parentObjectHierarchy.last(),
