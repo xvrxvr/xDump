@@ -1,13 +1,13 @@
 #include <cstdint>
 #include <string>
 
-#include <error_handler.h>
+#include "error_handler.h"
 
 namespace xDump {
     bool ErrorHandler::invalidState = false;
     ErrorHandler::Severity ErrorHandler::defaultSeverity = ErrorHandler::warning;
 
-void ErrorHandler::reportError(QString message, Severity severity, const char* file, uint64_t line)
+void ErrorHandler::reportError(QString message, Severity severity, const char* file, const char *functionName, uint64_t line)
 {
     QString buffer = "";
     switch (severity) {
@@ -31,7 +31,7 @@ void ErrorHandler::reportError(QString message, Severity severity, const char* f
             buffer += "You should specify severity!";
             break;
     }
-    buffer += ": '" + message + "' in file " + QString(file) + " at line " + QString::number(line);
+    buffer += ": '" + message + "' in file " + QString(file) + " in function " + QString(functionName) + " at line " + QString::number(line);
 
     if (severity < defaultSeverity)
         return;

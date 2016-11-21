@@ -3,9 +3,6 @@
 
 #include <QDomNamedNodeMap>
 #include <QJSEngine>
-#include <QObject>
-
-#include <error_handler.h>
 
 namespace xDump {
 
@@ -32,24 +29,12 @@ private:
         QString method;
     };
 
-    void parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes, QString section = "");
+    void parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes);
     void addXmlToJsEngine(ConfigElementAttributes attributes, QString text = "");
     bool checkObjectHierarchy(QStringList objectHierarchy);
 
     static QString defaultConfigFileName;
     QJSEngine &jsEngine;
-};
-
-class ConfigParserBridge : public QObject {
-    Q_OBJECT
-public:
-    ConfigParserBridge(ConfigParser &_parser) : QObject (), parser(_parser) {}
-    Q_INVOKABLE void transferToParser(QString file, QString section = "") {
-        parser.parseConfig(file, section);
-    }
-
-private:
-    ConfigParser &parser;
 };
 
 }
