@@ -8,8 +8,7 @@ SOURCES += main.cpp \
     config_parser.cpp \
     system_bridge.cpp
 
-RESOURCES += qml.qrc \
-    config.qrc
+RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -19,8 +18,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+copydata.commands = $(COPY_DIR) $$PWD/configs $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata
+
 DISTFILES += \
-    default_config.xml
+    configs/default_config.xml
 
 HEADERS += \
     error_handler.h \

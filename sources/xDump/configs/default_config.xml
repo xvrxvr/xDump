@@ -3,20 +3,19 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="globHeader" type="String" method="assign">-h $(OPTS=) $(INP_FILE)</field>
+            <field name="globHeader" type="String" method="assign">-h ${OPTS=) $(INP_FILE)</field>
         </field>
     </field>
 
     <JS>
         var lines = executer.exec('globHeader');
-        for(var l of lines)
-        {
+        for (var l of lines) {
             if (l.match(/file format elf/) !== null) {
-                parseConfig(":/default_config.xml", "/root/skip[@section='ElfConfig']");
+                parseConfig(':/default_config.xml', 'ElfConfig');
                 break;
             }
             if (l.match(/file format pe-/) !== null) {
-                parseConfig(":/default_config.xml", "/root/skip[@section='PEConfig']");
+                parseConfig(':/default_config.xml', 'PEConfig');
                 break;
             }
         }
@@ -40,3 +39,4 @@
     </skip>
 
 </root>
+
