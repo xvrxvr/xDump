@@ -18,8 +18,7 @@ void ConfigParser::parseConfig(QString inputFile, QString section)
     QString fileToOpen = inputFile == "" ? defaultConfigFileName : inputFile;
     QFile file(fileToOpen);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text )) {
-        ErrorHandler::reportError("Failed to open file for reading.",
-                                  ErrorHandler::fatal, __FILE__, __LINE__);
+        PrintError("Failed to open file for reading.", ErrorHandler::fatal);
         ErrorHandler::checkState();
         return;
     }
@@ -28,8 +27,7 @@ void ConfigParser::parseConfig(QString inputFile, QString section)
     query.setFocus(&file);
     query.setQuery(section == "" ? "root" : section); // Example: query.setQuery("/root/skip[@section='ElfConfig']");
     if (!query.isValid()) {
-        ErrorHandler::reportError("Invalid query for " + fileToOpen,
-                                  ErrorHandler::fatal, __FILE__, __LINE__);
+        PrintError("Invalid query for " + fileToOpen, ErrorHandler::fatal);
         ErrorHandler::checkState();
         return;
     }
@@ -40,8 +38,7 @@ void ConfigParser::parseConfig(QString inputFile, QString section)
     QDomDocument doc;
     if (!doc.setContent(res)) {
         file.close();
-        ErrorHandler::reportError("Failed to parse the file into a DOM tree.",
-                                  ErrorHandler::fatal, __FILE__, __LINE__);
+        PrintError("Failed to parse the file into a DOM tree.", ErrorHandler::fatal);
         ErrorHandler::checkState();
         return;
     }
@@ -71,15 +68,13 @@ void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes pa
                 QDomNode childNode = n.firstChild();
                 QString childText = "";
                 if (childNode.isNull() || childNode.toText().isNull()) {
-                    ErrorHandler::reportError("JS tag should have text",
-                                              ErrorHandler::fatal, __FILE__, __LINE__);
+                    PrintError("JS tag should have text", ErrorHandler::fatal);
                 }
                 childText = childNode.toText().data();
                 jsEngine.evaluate(childText);
             } else if (e.tagName() == "skip") {
             } else {
-                ErrorHandler::reportError("Unrecognuzed tag name: " + e.tagName(),
-                                          ErrorHandler::fatal, __FILE__, __LINE__);
+                PrintError("Unrecognuzed tag name: " + e.tagName(), ErrorHandler::fatal);
             }
         }
         n = n.nextSibling();
@@ -93,8 +88,7 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
     QJSValue parentObject = jsEngine.globalObject();
     for (int i = 0; i < parentObjectHierarchy.size() - 1; ++i) {
         if (!parentObject.hasProperty(parentObjectHierarchy.at(i))) {
-            ErrorHandler::reportError("Can't find property " + parentObjectHierarchy.at(i).toLatin1(),
-                                      ErrorHandler::fatal, __FILE__, __LINE__);
+            PrintError("Can't find property " + parentObjectHierarchy.at(i).toLatin1(), ErrorHandler::fatal);
             return;
         }
         parentObject = parentObject.property(parentObjectHierarchy.at(i));
@@ -106,8 +100,8 @@ void ConfigParser::addXmlToJsEngine(ConfigElementAttributes attributes, QString 
         if (parentObject.hasProperty(parentObjectHierarchy.last())) {
             QJSValue instanceof = jsEngine.evaluate(attributes.qGetName() + " instanceof " + attributes.qGetType());
             if (!instanceof.toBool()) {
-                ErrorHandler::reportError("Object " + attributes.qGetName() + " should be instanceof " + attributes.qGetType(),
-                                          ErrorHandler::fatal, __FILE__, __LINE__);
+                PrintError("Object " + attributes.qGetName() + " should be instanceof " + attributes.qGetType(),
+                           ErrorHandler::fatal);
             }
             return;
         } else {
