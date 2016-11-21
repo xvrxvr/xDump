@@ -4,13 +4,14 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QXmlQuery>
+#include <QDir>
 
 #include "error_handler.h"
 #include "config_parser.h"
 
 namespace xDump {
 
-QString ConfigParser::defaultConfigFileName = ":/default_config.xml";
+QString ConfigParser::defaultConfigFileName = QString("configs") + QDir::separator() + QString("default_config.xml");
 
 void ConfigParser::parseConfig(QString inputFile, QString section)
 {
