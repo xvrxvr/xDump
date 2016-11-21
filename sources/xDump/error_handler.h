@@ -8,6 +8,8 @@
 
 namespace xDump {
 
+#define PrintError(message, severity) ErrorHandler::reportError(message, severity, __FILE__, __func__,__LINE__)
+
 class ErrorHandler
 {
 public:
@@ -21,7 +23,8 @@ public:
     };
 
     // Print error or update internal state
-    static void reportError (QString message, Severity severity, const char* file = "", uint64_t line = 0);
+    static void reportError (QString message, Severity severity, const char* file = "",
+                             const char* functionName = "", uint64_t line = 0);
     // Abort execution if we have non-zero number of fatal errors
     static void checkState ();
 
