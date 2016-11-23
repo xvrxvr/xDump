@@ -41,6 +41,22 @@ ApplicationWindow {
             }
 
             MenuItem {
+                text: "Next tab"
+                shortcut: "Ctrl+Right"
+                onTriggered: {
+                    webPanel.nextTab()
+                }
+            }
+
+            MenuItem {
+                text: "Previous tab"
+                shortcut: "Ctrl+Left"
+                onTriggered: {
+                    webPanel.previousTab()
+                }
+            }
+
+            MenuItem {
                 text: "Delete tab"
                 shortcut: "Ctrl+W"
                 onTriggered: {
@@ -53,7 +69,6 @@ ApplicationWindow {
                 shortcut: "Ctrl+F"
                 onTriggered: {
                     searchPanel.visible = !searchPanel.visible
-                    webPanel.openUrl("ya.ru")
                 }
             }
 
@@ -62,7 +77,16 @@ ApplicationWindow {
                 text: "Open file"
                 shortcut: "Ctrl+O"
                 onTriggered: {
-                    fileDialogComponent.createObject()
+                    fileDialogComponent.createObject(root)
+                }
+            }
+
+            MenuItem {
+                text: "Split window"
+                shortcut: "Ctrl+Z"
+                onTriggered: {
+                    var comp = webPanelComponent.createObject()
+                    center.addItem(comp)
                 }
             }
         }
@@ -80,18 +104,42 @@ ApplicationWindow {
         width: parent.width
         orientation: Qt.Horizontal
 
-        Rectangle {
+        GroupBox {
             id: searchPanel
+            title: "Search panel"
             visible: false
             width: 250
             Layout.maximumWidth: 250
             Layout.minimumWidth: 250
-            color: "lightgrey"
 
-            TextEdit {
-                visible: true
+            TextField {
                 id: searchField
-                anchors.fill: parent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 5
+            }
+
+            ListView {
+                id: listView
+                anchors.top: searchField.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: 5
+                highlight: Rectangle { color: "lightsteelblue"; radius: 2 }
+                focus: true
+                model: SearchModel {}
+                delegate: Text {
+                    text: name + ": " + number
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        listView.currentIndex = index
+                    }
+                }
             }
         }
 

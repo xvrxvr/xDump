@@ -19,9 +19,9 @@ Item {
             onCurrentIndexChanged: {
                 if (count > 0) {
                     var tab = getTab(currentIndex)
-                    webView.url = "https://www.google.ru/#q=" + getTab(currentIndex).title
+                    webView.url = "_" + getTab(currentIndex).title
                 } else {
-                    webView.url = "https://www.google.ru/#q=null"
+                    webView.url = "_null"
                 }
             }
 
@@ -42,7 +42,7 @@ Item {
         anchors.top: toolBar.bottom
         anchors.left: parent.left
         width: parent.width
-        url: "https://www.google.ru/#q=Main"
+        url: "_Main"
         visible: true
     }
 
@@ -54,7 +54,7 @@ Item {
         var tab = tabComponent.createObject(tabBar)
         tab.title = "tab_" + (tabBar.count - 1)
         tabBar.currentIndex = tabBar.count - 1
-        webView.url = "https://www.google.ru/#q=" + tabBar.getTab(tabBar.currentIndex).title
+        webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
     }
 
     function deleteTab() {
@@ -63,6 +63,21 @@ Item {
             var index = tabBar.currentIndex
             tabBar.currentIndex = 0
             tabBar.currentIndex = index
+            webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
+        }
+    }
+
+    function nextTab() {
+        if (tabBar.currentIndex < (tabBar.count - 1)) {
+            tabBar.currentIndex += 1
+            webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
+        }
+    }
+
+    function previousTab() {
+        if (tabBar.currentIndex > 0) {
+            tabBar.currentIndex -= 1
+            webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
         }
     }
 
