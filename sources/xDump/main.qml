@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtWebEngine 1.3
+import QtQuick.Dialogs 1.2
 
 
 ApplicationWindow {
@@ -11,6 +12,11 @@ ApplicationWindow {
     width: 1000
     height: 600
     title: "Hello World"
+
+
+    /*************************************************************************************************/
+    /*Menu*/
+    /*************************************************************************************************/
 
     menuBar: MenuBar {
         Menu {
@@ -25,78 +31,54 @@ ApplicationWindow {
 
         Menu {
             title: "Actions"
+
             MenuItem {
                 text: "Add tab"
                 shortcut: "Ctrl+T"
                 onTriggered: {
-                    var tab = tabComponent.createObject(tabBar)
-                    tab.title = "tab_" + (tabBar.count - 1)
-                    tabBar.currentIndex = tabBar.count - 1
-                    webView.url = "https://www.google.ru/#q=" + getTab(tabBar.currentIndex).title
+                    webPanel.addTab()
                 }
             }
+
             MenuItem {
                 text: "Delete tab"
                 shortcut: "Ctrl+W"
-                onTriggered:
-                    if (tabBar.count > 0) {
-                        tabBar.removeTab(tabBar.currentIndex)
-                        var index = tabBar.currentIndex
-                        tabBar.currentIndex = 0
-                        tabBar.currentIndex = index
+                onTriggered: {
+                    webPanel.deleteTab()
                 }
             }
+
             MenuItem {
                 text: "Toggle search panel"
                 shortcut: "Ctrl+F"
                 onTriggered: {
                     searchPanel.visible = !searchPanel.visible
+                    webPanel.openUrl("ya.ru")
+                }
+            }
+
+
+            MenuItem {
+                text: "Open file"
+                shortcut: "Ctrl+O"
+                onTriggered: {
+                    fileDialogComponent.createObject()
                 }
             }
         }
     }
 
-    /*************************************************************************************************/
-    /*Top*/
-    /*************************************************************************************************/
-
-    ToolBar {
-        id: toolBar
-        height: 25
-
-        TabView {
-            id: tabBar
-            anchors.fill: parent
-            frameVisible: false
-            tabsVisible: true
-            height: tab0.implicitHeight
-
-
-            onCurrentIndexChanged: {
-                if (count > 0) {
-                    var tab = getTab(currentIndex)
-                    webView.url = "https://www.google.ru/#q=" + getTab(currentIndex).title
-                } else {
-                    webView.url = "https://www.google.ru/#q=null"
-                }
-            }
-
-            Tab {
-                id: tab0
-                title: "Main"
-            }
-
-        }
-    }
 
     /*************************************************************************************************/
     /*Center*/
     /*************************************************************************************************/
 
     SplitView {
-        anchors.top: toolBar.bottom
+        id: center
+        anchors.top: parent.top//toolBar.bottom
         anchors.bottom: statusBar.top
         width: parent.width
+        orientation: Qt.Horizontal
 
         Rectangle {
             id: searchPanel
@@ -105,15 +87,22 @@ ApplicationWindow {
             Layout.maximumWidth: 250
             Layout.minimumWidth: 250
             color: "lightgrey"
-            }
 
-        WebEngineView {
-            id: webView
-            url: "https://www.google.ru/#q=Main"
-            visible: (tabBar.count != 0)
-            Layout.fillWidth: true
+            TextEdit {
+                visible: true
+                id: searchField
+                anchors.fill: parent
+            }
+        }
+
+
+        WebPanel {
+            height: centerLeft.height
+            visible: true
+            id: webPanel
         }
     }
+
 
     /*************************************************************************************************/
     /*Bottom*/
@@ -141,11 +130,37 @@ ApplicationWindow {
     /*************************************************************************************************/
 
     Component {
-        id: tabComponent
-        Tab {
-         }
+        id: webPanelComponent
+        WebPanel {
+            Layout.minimumWidth: 250
+        }
+    }
+
+
+    Component {
+        id: webPanelComponent2
+        Rectangle {
+            Layout.maximumWidth: 200
+            width: 200
+            color: "blue"
+        }
+    }
+
+
+    Component {
+        id: fileDialogComponent
+        FileDialog {
+            id: fileDialog
+            title: "Please choose a file"
+            folder: "."
+            onAccepted: {
+                console.log("You chose: " + fileDialog.fileUrls)
+            }
+            onRejected: {
+                console.log("Canceled")
+            }
+            Component.onCompleted: visible = true
+        }
     }
 
 }
-
-
