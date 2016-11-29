@@ -7,6 +7,7 @@
 #include "error_handler.h"
 #include "config_parser.h"
 #include "system_bridge.h"
+#include "system_executer.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,11 +27,24 @@ int main(int argc, char *argv[])
     executerObject.setProperty("config", config);
 
     xDump::ConfigParser configParser(engine);
-    xDump::SystemBridge systemBridge (configParser);
+    xDump::SystemExecuter systemExecuter;
+    xDump::SystemBridge systemBridge (configParser, systemExecuter);
+
+    //systemBridge.executeCommand("", QStringList());
+
     QJSValue jsSystemBridge = engine.newQObject(&systemBridge);
     QJSValue jsParseConfig = jsSystemBridge.property("transferToParser");
     globalObject.setProperty("parseConfig", jsParseConfig);
+    QJSValue jsExecuteCommand = jsSystemBridge.property("executeCommand");
+    globalObject.setProperty("executeCommand", jsExecuteCommand);
+
     configParser.parseConfig();
+
+    //engine.evaluate("executeCommand('objdump', ['-D', 'xDump'])");
+
+    //xDump::SystemExecuter systemExecuter;
+    //systemExecuter.runCommand("ls", QStringList("-la"));
+
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

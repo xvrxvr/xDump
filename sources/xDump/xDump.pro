@@ -6,7 +6,8 @@ CONFIG += c++11
 SOURCES += main.cpp \
     error_handler.cpp \
     config_parser.cpp \
-    system_bridge.cpp
+    system_bridge.cpp \
+    system_executer.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,4 +31,5 @@ DISTFILES += \
 HEADERS += \
     error_handler.h \
     config_parser.h \
-    system_bridge.h
+    system_bridge.h \
+    system_executer.h
