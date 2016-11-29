@@ -1,19 +1,46 @@
 
+function Environment() {}
+
+Environment.prototype = {
+    logLevel : 1,
+    logFile : './log.txt',
+    loadConfig : function (XMLPath) {
+        // Load config from XMLPath
+    }
+}
+
+// Global object Environment
+var env = new Environment()
+
+/*--------------------------------------------------------------------------*/
+// Environment.LineStream = function (data) {...}
+// Environment.LineStream.prototype.getLine() {...}
+
+function StreamError(message) {
+    this.name = 'StreamError';
+    this.message = message || 'Error occured!';
+    this.stack = (new Error()).stack;
+    this.getReason = function () {return 'EOF';}
+}
+
+StreamError.prototype = Object.create(Error.prototype);
+StreamError.prototype.constructor = StreamError;
+
+
 function LineStream() {}
 
 LineStream.prototype = {
-    getLine : function() {},
+    getLine : function() {
+        try {throw new StreamError();} catch(e) {console.log(e.message)}
+        return 'Line got from objdump.';
+    },
     getLines : function() {},
-    data : ''
+
+    kill : function() {this.data = '';}
 }
 
-// Global?
-dataContainer = new LineStream();
 
-function ViewConfig(cfg) {
-    if(typeof(cfg) === 'undefined') {this.config = {}; return;}
-    this.config = cfg;
-}
+/*--------------------------------------------------------------------------*/
 
 function Executor() {}
 
@@ -28,13 +55,34 @@ Executor.prototype =  {
     },
     exec : function (options) {
         // Run objdump here
-        dataContainer.data = 'objdump >';
+        var result = new LineStream()
 
         return ;
     },
 
 }
 
+var executor = new Executor();
+
+/*--------------------------------------------------------------------------*/
+function ViewConfig(cfg) {
+    if(typeof(cfg) === 'undefined') {this.config = {}; return;}
+    this.config = cfg;
+
+    this.execDriver = function () {
+        this.inputStream = executor.exec();
+    }
+
+    // Legit ?
+    this.execDriver.getLines = function() {
+        return this.inputStream;
+    }
+}
+
+// Or this >>>
+/*ViewConfig.execDriver.getLines.prototype = function () {
+    return this.inputStream
+};*/
 
 ViewConfig.prototype = {
     viewTranslatorConfig : {
@@ -43,15 +91,17 @@ ViewConfig.prototype = {
         footer : '</html>'
     },
     viewTranslator : {
-        getHeader   : function() {return '<html><body>'/*this.viewTranslatorConfig.header; ???*/;},
+        getHeader   : function() {
+            return '<html><body>';
+            /*this.viewTranslatorConfig.header; ???*/
+        },
         getFooter   : function() {return '</body></html>';},
         getBody     : function() {
-            var body = 'body';
+            var body = 'LineStreamEx object TBD';
             return body;
         }
-    },
-    execDriver : function () {}
+    }
 }
 
-vcfg = new ViewConfig();
+var vcfg = new ViewConfig();
 
