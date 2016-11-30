@@ -202,10 +202,13 @@ ApplicationWindow {
             title: "Please choose a file"
             folder: "."
             onAccepted: {
-                console.log("You chose: " + fileDialog.fileUrls)
+                console.log("You chose: " + fileDialog.fileUrl)
                 env.loadConfig()
                 console.log(executer.config.common)
-                executeCommand('objdump', ['-x', fileDialog.fileUrls])
+                var path = fileDialog.fileUrl.toString()
+                path = path.replace(/^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/,"")
+                path = decodeURIComponent(path)
+                executeCommand('objdump.exe', ['-x', path])
                 console.log(getError())
                 console.log(getOutput())
             }
