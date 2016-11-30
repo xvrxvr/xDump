@@ -39,8 +39,6 @@ int main(int argc, char *argv[])
     scriptFile.close();
     engine.evaluate(contents, fileName);
 
-    //TODO: DELETE THIS SECTION LATER!
-    engine.evaluate("env.loadConfig()");
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

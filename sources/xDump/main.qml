@@ -203,6 +203,11 @@ ApplicationWindow {
             folder: "."
             onAccepted: {
                 console.log("You chose: " + fileDialog.fileUrls)
+                env.loadConfig()
+                console.log(executer.config.common)
+                executeCommand('objdump', ['-x', fileDialog.fileUrls])
+                console.log(getError())
+                console.log(getOutput())
             }
             onRejected: {
                 console.log("Canceled")
