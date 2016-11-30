@@ -11,6 +11,9 @@ namespace xDump {
 
 bool SystemExecuter::runCommand(QString execName, QStringList arguments)
 {
+    output = QString();
+    error  = QString();
+
     process = new QProcess();
 
     connect (process, &QProcess::readyReadStandardOutput, this, &SystemExecuter::captureOutput);
@@ -24,15 +27,24 @@ bool SystemExecuter::runCommand(QString execName, QStringList arguments)
 void SystemExecuter::captureOutput()
 {
     QByteArray byteArray = process->readAllStandardOutput();
-    QString output (byteArray);
-    std::cout << qPrintable(output) << std::endl;
+    output += QString(byteArray);
 }
 
 void SystemExecuter::captureError()
 {
     QByteArray byteArray = process->readAllStandardError();
-    QString error (byteArray);
-    std::cout << "ERROR:\n" << qPrintable(error) << std::endl;
+    error += QString(byteArray);
+
+}
+
+QString SystemExecuter::getOutput()
+{
+    return output;
+}
+
+QString SystemExecuter::getError()
+{
+    return error;
 }
 
 }

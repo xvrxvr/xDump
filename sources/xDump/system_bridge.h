@@ -13,13 +13,16 @@ namespace xDump {
 class SystemBridge : public QObject {
     Q_OBJECT
 public:
-    SystemBridge(ConfigParser &_parser, SystemExecuter &_executer) : QObject (), parser(_parser), executer(_executer) {}
+    SystemBridge (QJSEngine &_jsEngine) : jsEngine(_jsEngine), parser(_jsEngine) {}
     Q_INVOKABLE void transferToParser(QString file = "", QString section = "");
     Q_INVOKABLE void executeCommand(QString execName, QStringList arguments);
+    Q_INVOKABLE QString getOutput();
+    Q_INVOKABLE QString getError();
 
 private:
-    ConfigParser &parser;
-    SystemExecuter &executer;
+    QJSEngine &jsEngine;
+    ConfigParser parser;
+    SystemExecuter executer;
 };
 
 }

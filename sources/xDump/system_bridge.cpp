@@ -17,4 +17,15 @@ void SystemBridge::executeCommand(QString execName, QStringList arguments)
     executer.runCommand(execName, arguments);
 }
 
+QString SystemBridge::getOutput()
+{
+    return executer.getOutput();
+}
+
+QString SystemBridge::getError()
+{
+    return executer.getError();
+}
+
+
 }

@@ -13,6 +13,8 @@ class SystemExecuter : public QObject {
 public:
     SystemExecuter () : QObject (), process (NULL) {}
     bool runCommand(QString execName, QStringList arguments);
+    QString getOutput ();
+    QString getError();
 
 private slots:
     void captureOutput();
@@ -20,6 +22,8 @@ private slots:
 
 private:
     QProcess *process;
+    QString output;
+    QString error;
 };
 
 }
