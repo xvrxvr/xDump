@@ -208,9 +208,10 @@ ApplicationWindow {
                 var path = fileDialog.fileUrl.toString()
                 path = path.replace(/^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/,"")
                 path = decodeURIComponent(path)
-                executeCommand('objdump.exe', ['-x', path])
+                executeCommand('objdump', ['-x', '/' + path])
                 console.log(getError())
-                console.log(getOutput())
+                webPanel.load(getOutput())
+                //console.log()
             }
             onRejected: {
                 console.log("Canceled")

@@ -81,6 +81,11 @@ Item {
         }
     }
 
+    function load(html) {
+        html = '<html><body><pre>' + html + '</pre></body></html>'
+        webView.loadHtml(html)
+    }
+
 
     /*************************************************************************************************/
     /*Components*/
