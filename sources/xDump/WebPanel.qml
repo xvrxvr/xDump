@@ -86,6 +86,10 @@ Item {
         webView.loadHtml(html)
     }
 
+    function getProgress() {
+        return webView.loadProgress
+    }
+
 
     /*************************************************************************************************/
     /*Components*/

@@ -109,6 +109,7 @@ ApplicationWindow {
             title: "Search panel"
             visible: false
             width: 250
+            height: parent.height
             Layout.maximumWidth: 250
             Layout.minimumWidth: 250
 
@@ -145,7 +146,7 @@ ApplicationWindow {
 
 
         WebPanel {
-            height: centerLeft.height
+            height: center.height
             visible: true
             id: webPanel
         }
@@ -168,7 +169,7 @@ ApplicationWindow {
             height: parent.height
             minimumValue: 0
             maximumValue: 100
-            value: webView.loadProgress
+            value: webPanel.getProgress()
         }
     }
 
@@ -199,10 +200,10 @@ ApplicationWindow {
         id: fileDialogComponent
         FileDialog {
             id: fileDialog
-            title: "Please choose a file"
+            title: "Please choose a file to dump"
             folder: "."
             onAccepted: {
-                console.log("You chose: " + fileDialog.fileUrl)
+                console.log("File to dump: " + fileDialog.fileUrl)
                 env.loadConfig()
                 console.log(executer.config.common)
                 var path = fileDialog.fileUrl.toString()
@@ -211,7 +212,6 @@ ApplicationWindow {
                 executeCommand('objdump', ['-x', '/' + path])
                 console.log(getError())
                 webPanel.load(getOutput())
-                //console.log()
             }
             onRejected: {
                 console.log("Canceled")

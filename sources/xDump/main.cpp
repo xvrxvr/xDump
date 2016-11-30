@@ -39,17 +39,7 @@ int main(int argc, char *argv[])
     scriptFile.close();
     engine.evaluate(contents, fileName);
 
-
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-    // Test
-    //xDump::SystemExecuter systemExecuter;
-    //systemExecuter.runCommand("ls", QStringList("-la"));
-    engine.evaluate("console.log(executer.config.common)");
-    engine.evaluate("executeCommand('objdump', ['-x', 'xDump'])");
-    //engine.evaluate("executeCommand('objdump', ['--version'])");
-    engine.evaluate("var a = getOutput()");
-    engine.evaluate("console.log(a.match(/file format elf/))");
 
     return app.exec();
 }
