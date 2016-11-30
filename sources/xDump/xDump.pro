@@ -6,7 +6,8 @@ CONFIG += c++11
 SOURCES += main.cpp \
     error_handler.cpp \
     config_parser.cpp \
-    system_bridge.cpp
+    system_bridge.cpp \
+    system_executer.cpp
 
 RESOURCES += qml.qrc
 
@@ -18,7 +19,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-copydata.commands = $(COPY_DIR) $$shell_path($$PWD/configs) $$shell_path($$OUT_PWD/configs)
+copydata.commands = $(COPY_DIR) $$shell_path($$PWD/configs) $$shell_path($$OUT_PWD)
 first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
@@ -30,4 +31,5 @@ DISTFILES += \
 HEADERS += \
     error_handler.h \
     config_parser.h \
-    system_bridge.h
+    system_bridge.h \
+    system_executer.h

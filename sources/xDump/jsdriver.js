@@ -4,8 +4,10 @@ function Environment() {}
 Environment.prototype = {
     logLevel : 1,
     logFile : './log.txt',
-    loadConfig : function (XMLPath) {
-        // Load config from XMLPath
+    loadConfig : function (file, section) {
+        if (typeof(file) === 'undefined') file = '';
+        if (typeof(section) === 'undefined') section = '';
+        parseConfig(file, section)
     }
 }
 
@@ -42,17 +44,11 @@ LineStream.prototype = {
 
 /*--------------------------------------------------------------------------*/
 
-function Executor() {}
+function Executer() {}
 
 
-Executor.prototype =  {
-    config : {
-        common : ['$(PATH)', '$(EXE_NAME=objdump)'],
-        sections : {
-            globHeader : '-h $(OPT=) $(INP_FILE)',
-            //...
-        }
-    },
+Executer.prototype =  {
+    config : new Object,
     exec : function (options) {
         // Run objdump here
         var result = new LineStream()
@@ -62,7 +58,7 @@ Executor.prototype =  {
 
 }
 
-var executor = new Executor();
+var executer = new Executer();
 
 /*--------------------------------------------------------------------------*/
 function ViewConfig(cfg) {
@@ -70,7 +66,7 @@ function ViewConfig(cfg) {
     this.config = cfg;
 
     this.execDriver = function () {
-        this.inputStream = executor.exec();
+        this.inputStream = executer.exec();
     }
 
     // Legit ?
