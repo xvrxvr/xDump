@@ -4,7 +4,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtWebEngine 1.3
 import QtQuick.Dialogs 1.2
-
+import "jsdriver.js" as JSDriver
 
 ApplicationWindow {
     id: root
