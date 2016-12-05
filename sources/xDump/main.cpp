@@ -24,10 +24,8 @@ int main(int argc, char *argv[])
     globalObject.setProperty("parseConfig", jsParseConfig);
     QJSValue jsExecuteCommand = jsSystemBridge.property("executeCommand");
     globalObject.setProperty("executeCommand", jsExecuteCommand);
-    QJSValue jsGetOutput = jsSystemBridge.property("getOutput");
-    globalObject.setProperty("getOutput", jsGetOutput);
-    QJSValue jsGetError = jsSystemBridge.property("getError");
-    globalObject.setProperty("getError", jsGetError);
+    QJSValue jsWrapFileUrl = jsSystemBridge.property("wrapFileUrl");
+    globalObject.setProperty("wrapFileUrl", jsWrapFileUrl);
 
     // Load JS script to jsEngine
     QString fileName = ":/jsdriver.js";

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QUrl>
 
 #include "config_parser.h"
 #include "system_executer.h"
@@ -15,9 +16,8 @@ class SystemBridge : public QObject {
 public:
     SystemBridge (QJSEngine &_jsEngine) : jsEngine(_jsEngine), parser(_jsEngine) {}
     Q_INVOKABLE void transferToParser(QString file = "", QString section = "");
-    Q_INVOKABLE void executeCommand(QString execName, QStringList arguments);
-    Q_INVOKABLE QString getOutput();
-    Q_INVOKABLE QString getError();
+    Q_INVOKABLE QString executeCommand(QString execName, QStringList arguments);
+    Q_INVOKABLE QString wrapFileUrl (QUrl fileUrl);
 
 private:
     QJSEngine &jsEngine;

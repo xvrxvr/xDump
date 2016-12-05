@@ -205,13 +205,8 @@ ApplicationWindow {
             onAccepted: {
                 console.log("File to dump: " + fileDialog.fileUrl)
                 env.loadConfig()
-                console.log(executer.config.common)
-                var path = fileDialog.fileUrl.toString()
-                path = path.replace(/^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/,"")
-                path = decodeURIComponent(path)
-                executeCommand('objdump', ['-x', '/' + path])
-                console.log(getError())
-                webPanel.load(getOutput())
+                var path = decodeURIComponent(wrapFileUrl(fileDialog.fileUrl))
+                webPanel.load(executeCommand('objdump', ['-x', '/' + path]))
             }
             onRejected: {
                 console.log("Canceled")

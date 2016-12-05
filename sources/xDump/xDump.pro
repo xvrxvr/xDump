@@ -19,7 +19,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-copydata.commands = $(COPY_DIR) $$shell_path($$PWD/configs) $$shell_path($$OUT_PWD)
+unix:!android: copydata.commands = $(COPY_DIR) $$shell_path($$PWD/configs) $$shell_path($$OUT_PWD)
+else:copydata.commands = $(COPY_DIR) $$shell_path($$PWD/configs) $$shell_path($$OUT_PWD/configs)
 first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
