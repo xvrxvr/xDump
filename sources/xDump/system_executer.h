@@ -10,11 +10,10 @@ namespace xDump {
 
 class SystemExecuter : public QObject {
     Q_OBJECT
+
 public:
     SystemExecuter () : QObject (), process (NULL) {}
-    bool runCommand(QString execName, QStringList arguments);
-    QString getOutput ();
-    QString getError();
+    QString runCommand(QString execName, QStringList arguments);
 
 private slots:
     void captureOutput();

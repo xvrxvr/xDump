@@ -8,8 +8,7 @@
     </field>
 
     <JS>
-        executer.exec('globHeader');
-        var lines = getOutput()
+        var lines = executer.exec('globHeader');
         for (var l of lines)
         {
             if (l.match(/file format elf/) !== null) {

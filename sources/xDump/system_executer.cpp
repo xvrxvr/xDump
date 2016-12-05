@@ -9,7 +9,7 @@
 
 namespace xDump {
 
-bool SystemExecuter::runCommand(QString execName, QStringList arguments)
+QString SystemExecuter::runCommand(QString execName, QStringList arguments)
 {
     output = QString();
     error  = QString();
@@ -21,7 +21,10 @@ bool SystemExecuter::runCommand(QString execName, QStringList arguments)
 
     process->start(execName, arguments);
     process->waitForFinished(-1);
-    return true;
+
+    if (!error.isEmpty())
+        return error;
+    return output;
 }
 
 void SystemExecuter::captureOutput()
@@ -34,17 +37,6 @@ void SystemExecuter::captureError()
 {
     QByteArray byteArray = process->readAllStandardError();
     error += QString(byteArray);
-
-}
-
-QString SystemExecuter::getOutput()
-{
-    return output;
-}
-
-QString SystemExecuter::getError()
-{
-    return error;
 }
 
 }
