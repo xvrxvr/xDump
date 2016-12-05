@@ -8,8 +8,10 @@
     </field>
 
     <JS>
+        console.log('Hello world!');
+        console.log(executer);
         var lines = executer.exec('globHeader');
-        for (var l of lines)
+        /*for (var l of lines)
         {
             if (l.match(/file format elf/) !== null) {
                 env.loadConfig(":/default_config.xml", "/root/skip[@section='ElfConfig']");
@@ -19,7 +21,7 @@
                 env.loadConfig(":/default_config.xml", "/root/skip[@section='PEConfig']");
                 break;
             }
-        }
+        }*/
     </JS>
 
     <skip section='ElfConfig'>
