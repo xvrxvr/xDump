@@ -64,6 +64,7 @@ void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes pa
                 addXmlToJsEngine(ConfigElementAttributes(parentAttributes, e.attributes()), childText);
                 parseXmlElements(n, ConfigElementAttributes(parentAttributes, e.attributes()));
             } else if (e.tagName() == "JS") {
+                std::cout << "Parsing JS" << std::endl;
                 //Get text from child node and evaluate it
                 QDomNode childNode = n.firstChild();
                 QString childText = "";
@@ -71,7 +72,9 @@ void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes pa
                     PrintError("JS tag should have text", ErrorHandler::fatal);
                 }
                 childText = childNode.toText().data();
+                std::cout << childText.toUtf8().constData() << std::endl;
                 jsEngine.evaluate(childText);
+
             } else if (e.tagName() == "skip") {
             } else {
                 PrintError("Unrecognuzed tag name: " + e.tagName(), ErrorHandler::fatal);

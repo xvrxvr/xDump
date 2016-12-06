@@ -206,7 +206,10 @@ ApplicationWindow {
                 console.log("File to dump: " + fileDialog.fileUrl)
                 env.loadConfig()
                 var path = decodeURIComponent(wrapFileUrl(fileDialog.fileUrl))
-                webPanel.load(executeCommand('objdump', ['-x', '/' + path]))
+                env.addGlobObject('PATH', path);
+                //console.log('PATH = ', env.getGlobObject('PATH'));
+                //webPanel.load(executeCommand('objdump', ['-x', '/' + path]))
+                webPanel.load(executer.exec().getLines());
             }
             onRejected: {
                 console.log("Canceled")
