@@ -12,8 +12,35 @@ Environment.prototype = {
         parseConfig(file, section);
         console.log('Config parsed');
     },
-    addGlobObject : function (name, object) {},
-    getGlobObject : function (name) {}
+    globObjects : {},
+    addGlobObject : function (name, object) {
+        if (name in this.globObjects)
+            console.log("Warning. Variable already set.")
+
+        this.globObjects[name] = object;
+    },
+    getGlobObject : function (name) {
+        //if (name in this.globObjects)
+            return this.globObjects[name];
+    },
+    /*getVar : function(name) {
+        if (name in this) return this.name;
+    },*/
+
+    substituteString : function(str) {
+        if (typeof(str) !== 'string')
+            return str;
+
+        var result = str;
+        for (var key in this.globObjects) {
+            tmp = '\\$\\(' + key + '\\)';
+            re = new RegExp(tmp, 'g');
+            result = result.replace(re, this.getGlobObject(key));
+        }
+
+    return result;
+}
+
 }
 
 // Global object Environment
@@ -67,9 +94,11 @@ Executer.prototype =  {
     exec : function (options) {
         console.log("Executing");
         // Run objdump here
-        var str = executeCommand('objdump', ['-x', '/' + path]);
-        console.log(str);
+        console.log(this.config.common[0]);
+        var str = executeCommand('objdump', ['-x', '/' + '$(PATH)']);
         console.log("Objdump done.");
+        console.log(str);
+
         return new LineStream(str);
     }
 }
@@ -83,10 +112,7 @@ function ViewConfig(cfg) {
 }
 
 ViewConfig.prototype = {
-    viewTranslatorConfig : {
-        header : '',
-        footer : ''
-    },
+    viewTranslatorConfig : {},
     viewTranslator : {
         getHeader   : function() {},
         getFooter   : function() {},

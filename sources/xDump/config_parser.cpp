@@ -73,7 +73,8 @@ void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes pa
                 }
                 childText = childNode.toText().data();
                 std::cout << childText.toUtf8().constData() << std::endl;
-                jsEngine.evaluate(childText.toUtf8().constData());
+                jsEngine.evaluate(childText);
+
             } else if (e.tagName() == "skip") {
             } else {
                 PrintError("Unrecognuzed tag name: " + e.tagName(), ErrorHandler::fatal);
