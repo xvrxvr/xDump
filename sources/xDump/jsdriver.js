@@ -11,6 +11,7 @@ Environment.prototype = {
         console.log('Parsing config');
         parseConfig(file, section);
         console.log('Config parsed');
+        this.postLoad();
     },
     globObjects : {},
     addGlobObject : function (name, object) {
@@ -38,8 +39,11 @@ Environment.prototype = {
             result = result.replace(re, this.getGlobObject(key));
         }
 
-    return result;
-}
+        return result;
+    },
+    postLoad : function () {
+        // default $(PATH) etc in config_parser.cpp
+    }
 
 }
 
@@ -95,9 +99,9 @@ Executer.prototype =  {
         console.log("Executing");
         // Run objdump here
         console.log(this.config.common[0]);
-        var str = executeCommand('objdump', ['-x', '/' + '$(PATH)']);
+        var str = executeCommand('objdump', ['-x', '/' + env.substituteString('$(PATH)')]);
         console.log("Objdump done.");
-        console.log(str);
+        console.log(str.substring(0,300));
 
         return new LineStream(str);
     }
@@ -124,6 +128,7 @@ ViewConfig.prototype = {
         this.execDriver = new this.config.execDriver(this);
         this.viewTranslator = new this.config.viewTranslator(this);
         if ('postLoad' in this.execDriver) this.execDriver.postLoad();
+        if ('postLoad' in this.viewTranslator) this.viewTranslator.postLoad();
     },
     getViewTranslator : function(lines) {}
 }
