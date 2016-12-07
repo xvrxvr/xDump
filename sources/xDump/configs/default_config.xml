@@ -19,7 +19,7 @@
                 env.loadConfig("configs/default_config.xml", "/root/skip[@section='ElfConfig']");
                 break;
             }
-            if (l.match(/file format pe-/) !== null) {
+            if (l.match(/file format pe/) !== null) {
                 console.log('Loading pe format.');
                 env.loadConfig("configs/default_config.xml", "/root/skip[@section='PEConfig']");
                 break;
@@ -44,6 +44,17 @@
     </skip>
 
     <skip section='PEConfig'>
+        <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'FileHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
+        </field>
+
+        <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
+            new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
+        </field>
     </skip>
 
 </root>
