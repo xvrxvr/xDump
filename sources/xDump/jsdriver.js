@@ -108,7 +108,7 @@ function Executer() {}
 Executer.prototype =  {
     config : new Object,
     exec : function (options) {
-        var str = executeCommand('objdump', ['-x', env.substituteString('$(INP_FILE)')]);
+        var str = executeCommand('C:\\MinGW\\bin\\objdump.exe', ['-x', env.substituteString('$(INP_FILE)')]);
         //console.log("Objdump done.");
 
         return new LineStream(str);

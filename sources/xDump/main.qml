@@ -85,7 +85,7 @@ ApplicationWindow {
                 text: "Create dynamic window"
                 shortcut: "Ctrl+Z"
                 onTriggered: {
-                    var qmltext = '
+                    var qmltext = "
                         import QtQuick 2.7
                         import QtQuick.Layouts 1.1
                         import QtQuick.Controls 1.4
@@ -93,24 +93,26 @@ ApplicationWindow {
                         import QtWebEngine 1.3
                         import QtQuick.Dialogs 1.2
 
-
                         Dialog {
-                            id: dialogComponent
                             visible: true
-                            title: "Blue sky dialog"
-
-                            contentItem: Rectangle {
-                                color: "lightskyblue"
-                                implicitWidth: 400
-                                implicitHeight: 100
-                                Text {
-                                    text: "Hello world!"
-                                    color: "navy"
-                                    anchors.centerIn: parent
+                            standardButtons: StandardButton.Ok
+                            ColumnLayout{
+                                CheckBox {
+                                    id: 'cbox_x'
+                                    text: '-x'
+                                    checked: true
+                                }
+                                CheckBox {
+                                    id: 'cbox_D'
+                                    text: '-D'
+                                    checked: false
                                 }
                             }
+                            onAccepted: {
+                                fileDialogComponent.createObject(root)
+                            }
                         }
-                    '
+                    "
                     var component = Qt.createQmlObject(qmltext, root)
 
                 }
