@@ -4,7 +4,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtWebEngine 1.3
 import QtQuick.Dialogs 1.2
-import "jsdriver.js" as JSDriver
+//import "jsdriver.js" as JSDriver
 
 ApplicationWindow {
     id: root
@@ -232,10 +232,11 @@ ApplicationWindow {
                 console.log("File to dump: " + fileDialog.fileUrl)
                 var path = decodeURIComponent(wrapFileUrl(fileDialog.fileUrl))
 
-                var sectionName = 'GlobHeader';
+                var sectionName = 'FileHeader';
                 webPanel.addTab(sectionName);
                 env.addGlobObject('INP_FILE', path);
-                env.loadConfig()
+                console.log(path);
+                env.loadConfig();
                 var lineStrm = executer.exec(sectionName);
 
                 var vt = viewConfigSet[sectionName].getViewTranslator(lineStrm);
