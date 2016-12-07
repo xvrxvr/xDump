@@ -24,7 +24,7 @@ Item {
                     webView.url = "_null"
                 }
             }
-
+/*
             Tab {
                 id: tab0
                 title: "Main1"
@@ -33,6 +33,7 @@ Item {
                 id: tab1
                 title: "Main2"
             }
+            */
         }
     }
 
@@ -42,7 +43,7 @@ Item {
         anchors.top: toolBar.bottom
         anchors.left: parent.left
         width: parent.width
-        url: "_Main"
+        url: ""
         visible: true
     }
 
@@ -50,9 +51,9 @@ Item {
         webView.url = url;
     }
 
-    function addTab() {
+    function addTab(name) {
         var tab = tabComponent.createObject(tabBar)
-        tab.title = "tab_" + (tabBar.count - 1)
+        tab.title = name
         tabBar.currentIndex = tabBar.count - 1
         webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
     }

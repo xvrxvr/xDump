@@ -82,11 +82,37 @@ ApplicationWindow {
             }
 
             MenuItem {
-                text: "Split window"
+                text: "Create dynamic window"
                 shortcut: "Ctrl+Z"
                 onTriggered: {
-                    var comp = webPanelComponent.createObject()
-                    center.addItem(comp)
+                    var qmltext = '
+                        import QtQuick 2.7
+                        import QtQuick.Layouts 1.1
+                        import QtQuick.Controls 1.4
+                        import QtQuick.Controls.Styles 1.4
+                        import QtWebEngine 1.3
+                        import QtQuick.Dialogs 1.2
+
+
+                        Dialog {
+                            id: dialogComponent
+                            visible: true
+                            title: "Blue sky dialog"
+
+                            contentItem: Rectangle {
+                                color: "lightskyblue"
+                                implicitWidth: 400
+                                implicitHeight: 100
+                                Text {
+                                    text: "Hello world!"
+                                    color: "navy"
+                                    anchors.centerIn: parent
+                                }
+                            }
+                        }
+                    '
+                    var component = Qt.createQmlObject(qmltext, root)
+
                 }
             }
         }
@@ -209,6 +235,8 @@ ApplicationWindow {
                 env.addGlobObject('PATH', path);
                 //console.log('PATH = ', env.getGlobObject('PATH'));
                 //webPanel.load(executeCommand('objdump', ['-x', '/' + path]))
+                //TODO Get headers from ViewTranlatorSet
+                webPanel.addTab("Header 1");
                 webPanel.load(executer.exec().getLines());
             }
             onRejected: {
