@@ -1,6 +1,8 @@
 console.log("JSDriver loading");
 
-function Environment() {}
+function Environment() {
+    this.globObjects = {};
+}
 
 Environment.prototype = {
     logLevel : 1,
@@ -13,7 +15,6 @@ Environment.prototype = {
 
         this.postLoad();
     },
-    globObjects : {},
     addGlobObject : function (name, object) {
         if (name in this.globObjects)
             console.log("Warning. Variable already set.")
