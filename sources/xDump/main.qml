@@ -204,12 +204,21 @@ ApplicationWindow {
             folder: "."
             onAccepted: {
                 console.log("File to dump: " + fileDialog.fileUrl)
-                env.loadConfig()
                 var path = decodeURIComponent(wrapFileUrl(fileDialog.fileUrl))
-                env.addGlobObject('PATH', path);
-                //console.log('PATH = ', env.getGlobObject('PATH'));
-                //webPanel.load(executeCommand('objdump', ['-x', '/' + path]))
-                webPanel.load(executer.exec().getLines());
+                var sectionName = 'FileHeader';
+                env.addGlobObject('INP_FILE', path);
+                env.loadConfig()
+                var lineStrm = executer.exec(sectionName);
+
+                //webPanel.load(executer.exec(sectionName).getLines());
+                var vt = viewConfigSet[sectionName].getViewTranslator(lineStrm);
+
+                var toLoad = vt.getHeader() +
+                             vt.getBody() +
+                             vt.getFooter();
+
+                webPanel.load(toLoad);
+
             }
             onRejected: {
                 console.log("Canceled")

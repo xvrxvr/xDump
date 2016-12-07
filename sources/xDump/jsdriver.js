@@ -8,9 +8,9 @@ Environment.prototype = {
     loadConfig : function (file, section) {
         if (typeof(file) === 'undefined') file = '';
         if (typeof(section) === 'undefined') section = '';
-        console.log('Parsing config');
+
         parseConfig(file, section);
-        console.log('Config parsed');
+
         this.postLoad();
     },
     globObjects : {},
@@ -55,7 +55,7 @@ var env = new Environment()
 function ViewConfigSet() {}
 
 ViewConfigSet.prototype = {
-    viewConfs : []
+
 }
 
 var viewConfigSet = new ViewConfigSet();
@@ -75,16 +75,28 @@ StreamError.prototype = Object.create(Error.prototype);
 StreamError.prototype.constructor = StreamError;
 
 
-function LineStream(data) {this.data = data;}
+function LineStream(data) {
+    this.data = data.split(/\r?\n/);
+    this.index = 0;
+}
 
 LineStream.prototype = {
     getLine : function() {
-        try {throw new StreamError();} catch(e) {console.log(e.message)}
-        return 'Line got from objdump.';
+        /*try {throw new StreamError();} catch(e) {console.log(e.message)}
+        return 'Line got from objdump.';*/
+        if(this.index + 1 > this.data.length)
+            return new StreamError('EOF');
+
+        this.index += 1;
+        return this.data[this.index - 1];
     },
+
     getLines : function() {return this.data},
 
-    kill : function() {this.data = '';}
+
+    kill : function() {this.data = '';},
+
+    isEOF : function() {}
 }
 
 
@@ -96,12 +108,8 @@ function Executer() {}
 Executer.prototype =  {
     config : new Object,
     exec : function (options) {
-        console.log("Executing");
-        // Run objdump here
-        console.log(this.config.common[0]);
-        var str = executeCommand('objdump', ['-x', '/' + env.substituteString('$(PATH)')]);
-        console.log("Objdump done.");
-        console.log(str.substring(0,300));
+        var str = executeCommand('objdump', ['-x', '/' + env.substituteString('$(INP_FILE)')]);
+        //console.log("Objdump done.");
 
         return new LineStream(str);
     }
@@ -113,24 +121,38 @@ var executer = new Executer();
 function ViewConfig(cfg) {
     if(typeof(cfg) === 'undefined') {this.config = {}; return;}
     this.config = cfg;
+    this.postLoad();
 }
 
 ViewConfig.prototype = {
-    viewTranslatorConfig : {},
-    viewTranslator : {
-        getHeader   : function() {},
-        getFooter   : function() {},
-        getBody     : function() {}
-    },
+    /*config : {
+        viewTranslatorConfig : {},
+        viewTranslator : {
+            getHeader   : function() {return 'dummy'},
+            getFooter   : function() {return 'dummy'},
+            getBody     : function() {return 'dummy'}
+        }
+    },*/
     postLoad : function() {
         if (!('viewTranslator' in this.config)) this.config.viewTranslator = PlainViewTranslator;
         if (!('execDriver' in this.config)) this.config.execDriver = SimpleExecDriver;
         this.execDriver = new this.config.execDriver(this);
         this.viewTranslator = new this.config.viewTranslator(this);
-        if ('postLoad' in this.execDriver) this.execDriver.postLoad();
-        if ('postLoad' in this.viewTranslator) this.viewTranslator.postLoad();
+        if ('postLoad' in this.config.execDriver) this.config.execDriver.postLoad();
+        if ('postLoad' in this.config.viewTranslator) this.config.viewTranslator.postLoad();
     },
-    getViewTranslator : function(lines) {}
+    getViewTranslator : function(lines) {
+        if (this.config.viewTranslator === 'undefined')
+            console.log('Translator undefined.');
+
+        //console.log(typeof(PlainViewTranslator));
+        this.config.viewTranslator = PlainViewTranslator;
+        //console.log(typeof(this.config.viewTranslator));
+        var vt = new this.config.viewTranslator(lines);
+        //if ('postLoad' in vt) vt.postLoad();
+
+        return vt;
+    }
 }
 
 
@@ -145,17 +167,25 @@ String.prototype.replaceAll = function (sign, newSign) {
 
 /*--------------------------------------------------------------------------*/
 // Takes LineStream as arg -> html view
-function PlainViewTranslator(data) {this.data = data.getLines();}
+function PlainViewTranslator(data, config) {
+    //assert(typeof(data) === 'array');
+    this.data = data.getLines();
+}
 
 PlainViewTranslator.prototype = {
     getHeader : function () {return '<html><body>'},
     getFooter : function () {return '</body></html>'},
     getBody   : function () {
         // Escape symbols
-        var result = this.data.replaceAll('&', '&amp;');
-        result = result.replaceAll('<', '&lt;');
+        var result = '';
+        for (var i in this.data) {
+            var tmp = this.data[i].replaceAll('&', '&amp;');
+            tmp = tmp.replaceAll('<', '&lt;');
+            //tmp = tmp.replaceAll('\n', '<br>\n');
+            tmp += '<br>';
+            result += tmp;
+        }
 
-        result = result.replaceAll('\n', '<br>\n');
         return result;
     }
 }
