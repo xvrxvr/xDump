@@ -107,8 +107,13 @@ function Executer() {}
 
 Executer.prototype =  {
     config : new Object,
-    exec : function (options) {
-        var str = executeCommand('C:\\MinGW\\bin\\objdump.exe', ['-x', env.substituteString('$(INP_FILE)')]);
+
+    exec : function (sectionName) {
+        var fullExecPath = env.substituteString("$(PATH)/$(EXE_NAME)")
+        var argsStr = env.substituteString(this.config.sections[sectionName])
+        //console.log(fullExecPath)
+        //console.log(argsStr)
+        var str = executeCommand(fullExecPath, argsStr.split(' '));
         //console.log("Objdump done.");
 
         return new LineStream(str);

@@ -3,13 +3,12 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="FileHeader" type="String" method="assign">-h $(OPTS=) $(INP_FILE)</field>
+            <field name="FileHeader" type="String" method="assign">-h $(INP_FILE)</field>
         </field>
     </field>
 
     <JS>
         var lines = executer.exec('FileHeader').getLines();
-
         for (var i in lines)
         {
             var l = lines[i];
