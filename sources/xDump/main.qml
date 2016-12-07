@@ -237,8 +237,8 @@ ApplicationWindow {
                 var sectionName = 'FileHeader';
                 webPanel.addTab(sectionName);
                 env.addGlobObject('INP_FILE', path);
-                console.log(path);
-                env.loadConfig();
+                env.loadConfig()
+
                 var lineStrm = executer.exec(sectionName);
 
                 var vt = viewConfigSet[sectionName].getViewTranslator(lineStrm);
@@ -248,7 +248,6 @@ ApplicationWindow {
                              vt.getFooter();
 
                 webPanel.load(toLoad);
-
             }
             onRejected: {
                 console.log("Canceled")

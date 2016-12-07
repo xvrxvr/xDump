@@ -10,6 +10,25 @@
 #include "system_bridge.h"
 #include "system_executer.h"
 
+void loadToolsPath (QJSEngine &engine)
+{
+    // TODO: Add more tools
+    QSettings settings(QString("configs") + QDir::separator() + QString("path.ini"), QSettings::IniFormat);
+
+    QString sectionName = "";
+#ifdef Q_OS_UNIX
+    sectionName = "unix";
+#elif defined(Q_OS_WIN32)
+    sectionName = "windows";
+#else
+    xDump::PrintError("We don't support that OS.", xDump::ErrorHandler::internal);
+#endif
+    QString toolName = "objdump";
+    QString toolPath = settings.value(sectionName + "/" + toolName).toString();
+    engine.evaluate("env.addGlobObject('PATH', '" + toolPath.toLatin1() + "')");
+    engine.evaluate("env.addGlobObject('EXE_NAME', '" + toolName.toLatin1() + "')");
+}
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -36,6 +55,8 @@ int main(int argc, char *argv[])
     QString contents = stream.readAll();
     scriptFile.close();
     engine.evaluate(contents, fileName);
+
+    loadToolsPath (engine);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
