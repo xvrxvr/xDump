@@ -3,12 +3,12 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="globHeader" type="String" method="assign">-h $(OPTS=) $(INP_FILE)</field>
+            <field name="FileHeader" type="String" method="assign">-h $(OPTS=) $(INP_FILE)</field>
         </field>
     </field>
 
     <JS>
-        var lines = executer.exec('globHeader').getLines();
+        var lines = executer.exec('FileHeader').getLines();
 
         for (var i in lines)
         {
@@ -32,9 +32,9 @@
     <skip section='ElfConfig'>
         <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
             <field name="config" type="Object" method="add">
-                <field name="viewTranslator" type="PlainViewTranslator" method="assign"/>
-                <field name="execDriverConfig" type="JS">({sectionName:'globHeader'})</field>
-                <field name="execDriver" type="SimpleExecDriver" method="assign"/>
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'FileHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
             </field>
         </field>
 
