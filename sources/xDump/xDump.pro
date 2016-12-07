@@ -27,7 +27,8 @@ export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
 
 DISTFILES += \
-    configs/default_config.xml
+    configs/default_config.xml \
+    configs/path.ini
 
 HEADERS += \
     error_handler.h \

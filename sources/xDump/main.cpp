@@ -37,6 +37,18 @@ int main(int argc, char *argv[])
     scriptFile.close();
     engine.evaluate(contents, fileName);
 
+    QSettings settings(QString("configs") + QDir::separator() + QString("path.ini"), QSettings::IniFormat);
+    QString objdumpPath = "";
+
+#ifdef Q_OS_UNIX
+    objdumpPath = settings.value("unix/objdump").toString();
+#elif defined(Q_OS_WIN32)
+    objdumpPath = settings.value("unix/objdump").toString();
+#else
+    xDump::PrintError("We don't support that OS.", xDump::ErrorHandler::internal);
+#endif
+    std::cout << qPrintable(objdumpPath) << std::endl;
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();
