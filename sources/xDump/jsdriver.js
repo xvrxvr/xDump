@@ -108,7 +108,7 @@ function Executer() {}
 Executer.prototype =  {
     config : new Object,
     exec : function (options) {
-        var str = executeCommand('objdump', ['-x', '/' + env.substituteString('$(INP_FILE)')]);
+        var str = executeCommand('objdump', ['-x', env.substituteString('$(INP_FILE)')]);
         //console.log("Objdump done.");
 
         return new LineStream(str);
@@ -146,7 +146,8 @@ ViewConfig.prototype = {
             console.log('Translator undefined.');
 
         //console.log(typeof(PlainViewTranslator));
-        this.config.viewTranslator = PlainViewTranslator;
+        //console.log(typeof(this.config.viewTranslator));
+        //this.config.viewTranslator = PlainViewTranslator;
         //console.log(typeof(this.config.viewTranslator));
         var vt = new this.config.viewTranslator(lines);
         //if ('postLoad' in vt) vt.postLoad();
