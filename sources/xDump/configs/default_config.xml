@@ -8,20 +8,25 @@
     </field>
 
     <JS>
-        console.log('Hello world!');
-        console.log(executer);
-        var lines = executer.exec('globHeader');
-        /*for (var l of lines)
+        var lines = executer.exec('globHeader').getLines();
+
+        for (var i in lines)
         {
+            var l = lines[i];
+
             if (l.match(/file format elf/) !== null) {
-                env.loadConfig(":/default_config.xml", "/root/skip[@section='ElfConfig']");
+                console.log('Loading elf format.');
+                env.loadConfig("configs/default_config.xml", "/root/skip[@section='ElfConfig']");
                 break;
             }
             if (l.match(/file format pe-/) !== null) {
-                env.loadConfig(":/default_config.xml", "/root/skip[@section='PEConfig']");
+                console.log('Loading pe format.');
+                env.loadConfig("configs/default_config.xml", "/root/skip[@section='PEConfig']");
                 break;
             }
-        }*/
+        }
+
+
     </JS>
 
     <skip section='ElfConfig'>
