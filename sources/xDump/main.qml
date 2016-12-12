@@ -260,7 +260,7 @@ ApplicationWindow {
                      vt.getBody() +
                      vt.getFooter();
 
-        webPanel.load(toLoad);
+        webPanel.showHtml(toLoad);
         webPanel.saveData(toLoad);
     }
 

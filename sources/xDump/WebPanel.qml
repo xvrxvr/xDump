@@ -76,7 +76,7 @@ Item {
         }
     }
 
-    function load(html) {
+    function showHtml(html) {
         webView.loadHtml(html)
     }
 
