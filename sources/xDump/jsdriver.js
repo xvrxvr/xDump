@@ -29,15 +29,23 @@ Environment.prototype = {
         if (name in this) return this.name;
     },*/
 
+    _replacer : function (regex, str, newSymbol) {
+        re = new RegExp(regex, 'g');
+        return str.replace(re, newSymbol);
+    },
+
     substituteString : function(str) {
         if (typeof(str) !== 'string')
             return str;
 
         var result = str;
         for (var key in this.globObjects) {
-            tmp = '\\$\\(' + key + '\\)';
+            /*tmp = '\\$\\(' + key + '\\)';
             re = new RegExp(tmp, 'g');
-            result = result.replace(re, this.getGlobObject(key));
+            result = result.replace(re, this.getGlobObject(key));*/
+            result = this._replacer('\\$\\(' + key + '\\=' + '([0-9a-zA-Z\\/\\.\\\\\\:\\-]*)\\)',
+                                    result, '$1');
+            result = this._replacer('\\$\\(' + key + '\\)', result, this.getGlobObject(key));
         }
 
         return result;
@@ -209,3 +217,4 @@ SimpleExecDriver.prototype = {
 }
 
 console.log("JSDriver loaded");
+
