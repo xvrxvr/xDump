@@ -4,5 +4,6 @@
         <file>WebPanel.qml</file>
         <file>SearchModel.qml</file>
         <file>jsdriver.js</file>
+        <file>views.js</file>
     </qresource>
 </RCC>
