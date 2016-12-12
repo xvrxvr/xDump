@@ -20,7 +20,7 @@ Item {
                 if (count > 0) {
                     var tab = getTab(currentIndex)
                     if (tab.is_saved) {
-                        webView.loadHtml(tab.saved_data)
+                        webView.loadHtml(getFromBuffer(tab.bufferKey))
                     } else {
                         webView.url = "_" + getTab(currentIndex).title
                     }
@@ -84,9 +84,10 @@ Item {
         return webView.loadProgress
     }
 
-    function saveData(html) {
+    function saveData(key, html) {
         var tab = tabBar.getTab(tabBar.currentIndex)
-        tab.saved_data = html
+        tab.bufferKey = key
+        addToBuffer(key, html)
         tab.is_saved = true
     }
 
@@ -98,7 +99,7 @@ Item {
     Component {
         id: tabComponent
         Tab {
-            property var saved_data: " "
+            property var bufferKey: " "
             property var is_saved: false
         }
     }

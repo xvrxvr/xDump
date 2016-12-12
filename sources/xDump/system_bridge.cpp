@@ -23,4 +23,14 @@ QString SystemBridge::wrapFileUrl (QUrl fileUrl)
     return fileUrl.toLocalFile();
 }
 
+void SystemBridge::addToBuffer (QString key, QString data)
+{
+    htmlBuffer[key.toStdString()] = data.toStdString();
+}
+
+QString SystemBridge::getFromBuffer (QString key)
+{
+    return QString::fromStdString(htmlBuffer[key.toStdString()]);
+}
+
 }
