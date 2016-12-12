@@ -58,7 +58,18 @@
                 <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
             </field>
         </field>
+
+        <field name="viewConfigSet.ArchiveHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'ArchiveHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
+        </field>
     </skip>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <skip section='PEConfig'>
         <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
@@ -84,6 +95,15 @@
             <field name="config" type="Object" method="add">
                 <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
                 <field name="execDriverConfig" type="JS">({sectionName:'SectionHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
+        </field>
+
+        <field name="viewConfigSet.ArchiveHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'ArchiveHeader'})</field>
                 <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
             </field>
         </field>
