@@ -243,14 +243,18 @@ ApplicationWindow {
     }
 
     function dumpFile(path) {
-        var sectionName = 'FileHeader';
-        dumpSection(path, sectionName);
-    }
-
-    function dumpSection(path, sectionName) {
-        webPanel.addTab(sectionName);
         env.addGlobObject('INP_FILE', path);
         env.loadConfig()
+        for(var configName in viewConfigSet) {
+            var sectionName = configName;
+            if (viewConfigSet[sectionName].autoload) {
+                dumpSection(sectionName);
+            }
+        }
+    }
+
+    function dumpSection(sectionName) {
+        webPanel.addTab(sectionName);
 
         var lineStrm = executer.exec(sectionName);
 

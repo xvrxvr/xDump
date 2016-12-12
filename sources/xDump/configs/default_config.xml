@@ -3,7 +3,9 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="FileHeader" type="String" method="assign">-h $(INP_FILE)</field>
+            <field name="FileHeader" type="String" method="assign">-f $(INP_FILE)</field>
+            <field name="SectionHeader" type="String" method="assign">-h $(INP_FILE)</field>
+            <field name="ProgramHeader" type="String" method="assign">-p $(INP_FILE)</field>
         </field>
     </field>
 
@@ -30,6 +32,7 @@
 
     <skip section='ElfConfig'>
         <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
             <field name="config" type="Object" method="add">
                 <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
                 <field name="execDriverConfig" type="JS">({sectionName:'FileHeader'})</field>
@@ -37,13 +40,28 @@
             </field>
         </field>
 
-        <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
-            new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
+        <field name="viewConfigSet.ProgramHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'ProgramHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
+        </field>
+
+        <field name="viewConfigSet.SectionHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'SectionHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
         </field>
     </skip>
 
     <skip section='PEConfig'>
         <field name="viewConfigSet.FileHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
             <field name="config" type="Object" method="add">
                 <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
                 <field name="execDriverConfig" type="JS">({sectionName:'FileHeader'})</field>
@@ -51,8 +69,22 @@
             </field>
         </field>
 
-        <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
-            new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
+        <field name="viewConfigSet.ProgramHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'ProgramHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
+        </field>
+
+        <field name="viewConfigSet.SectionHeader" type="ViewConfig" method="assign">
+            <field name="autoload" type="JS" method="assign">true</field>
+            <field name="config" type="Object" method="add">
+                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="execDriverConfig" type="JS">({sectionName:'SectionHeader'})</field>
+                <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
+            </field>
         </field>
     </skip>
 
