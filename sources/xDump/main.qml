@@ -21,24 +21,26 @@ ApplicationWindow {
     menuBar: MenuBar {
         Menu {
             title: "App"
+
+            MenuItem {
+                text: "Open file"
+                shortcut: "Ctrl+O"
+                onTriggered: {
+                    fileDialogComponent.createObject(root)
+                }
+            }
+
             MenuItem {
                 text: "Exit"
                 onTriggered: {
                     root.close()
                 }
             }
+
         }
 
         Menu {
-            title: "Actions"
-
-            MenuItem {
-                text: "Add tab"
-                shortcut: "Ctrl+T"
-                onTriggered: {
-                    webPanel.addTab()
-                }
-            }
+            title: "Navigation"
 
             MenuItem {
                 text: "Next tab"
@@ -57,27 +59,30 @@ ApplicationWindow {
             }
 
             MenuItem {
-                text: "Delete tab"
+                text: "Close tab"
                 shortcut: "Ctrl+W"
                 onTriggered: {
                     webPanel.deleteTab()
                 }
             }
+        }
+
+        Menu {
+            title: "Debug actions"
+
+            MenuItem {
+                text: "Add tab"
+                shortcut: "Ctrl+T"
+                onTriggered: {
+                    webPanel.addTab()
+                }
+            }           
 
             MenuItem {
                 text: "Toggle search panel"
                 shortcut: "Ctrl+F"
                 onTriggered: {
                     searchPanel.visible = !searchPanel.visible
-                }
-            }
-
-
-            MenuItem {
-                text: "Open file"
-                shortcut: "Ctrl+O"
-                onTriggered: {
-                    fileDialogComponent.createObject(root)
                 }
             }
 
