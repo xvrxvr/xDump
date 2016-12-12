@@ -39,12 +39,9 @@ Environment.prototype = {
             return str;
 
         var result = str;
+        result = this._replacer('\\$\\([0-9a-zA-Z]+\\=([0-9a-zA-Z\\/\\.\\\\\\:\\-]*)\\)',
+                                result, '$1');
         for (var key in this.globObjects) {
-            /*tmp = '\\$\\(' + key + '\\)';
-            re = new RegExp(tmp, 'g');
-            result = result.replace(re, this.getGlobObject(key));*/
-            result = this._replacer('\\$\\(' + key + '\\=' + '([0-9a-zA-Z\\/\\.\\\\\\:\\-]*)\\)',
-                                    result, '$1');
             result = this._replacer('\\$\\(' + key + '\\)', result, this.getGlobObject(key));
         }
 
