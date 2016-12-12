@@ -248,12 +248,12 @@ ApplicationWindow {
         for(var configName in viewConfigSet) {
             var sectionName = configName;
             if (viewConfigSet[sectionName].autoload) {
-                dumpSection(sectionName);
+                dumpSection(path, sectionName);
             }
         }
     }
 
-    function dumpSection(sectionName) {
+    function dumpSection(path, sectionName) {
         webPanel.addTab(sectionName);
 
         var lineStrm = executer.exec(sectionName);
@@ -265,7 +265,7 @@ ApplicationWindow {
                      vt.getFooter();
 
         webPanel.showHtml(toLoad);
-        webPanel.saveData(toLoad);
+        webPanel.saveData(path + ":" + sectionName, toLoad);
     }
 
 }

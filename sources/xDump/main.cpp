@@ -45,6 +45,10 @@ int main(int argc, char *argv[])
     globalObject.setProperty("executeCommand", jsExecuteCommand);
     QJSValue jsWrapFileUrl = jsSystemBridge.property("wrapFileUrl");
     globalObject.setProperty("wrapFileUrl", jsWrapFileUrl);
+    QJSValue jsAddToBuffer = jsSystemBridge.property("addToBuffer");
+    globalObject.setProperty("addToBuffer", jsAddToBuffer);
+    QJSValue jsGetFromBuffer = jsSystemBridge.property("getFromBuffer");
+    globalObject.setProperty("getFromBuffer", jsGetFromBuffer);
 
     // Load JS script to jsEngine
     QString fileName = ":/jsdriver.js";

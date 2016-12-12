@@ -18,11 +18,14 @@ public:
     Q_INVOKABLE void transferToParser(QString file = "", QString section = "");
     Q_INVOKABLE QString executeCommand(QString execName, QStringList arguments);
     Q_INVOKABLE QString wrapFileUrl (QUrl fileUrl);
+    Q_INVOKABLE void    addToBuffer (QString key, QString data);
+    Q_INVOKABLE QString getFromBuffer (QString key);
 
 private:
     QJSEngine &jsEngine;
     ConfigParser parser;
     SystemExecuter executer;
+    std::map<std::string, std::string> htmlBuffer;
 };
 
 }
