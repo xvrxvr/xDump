@@ -233,7 +233,9 @@ ApplicationWindow {
             onAccepted: {
                 console.log("File to dump: " + fileDialog.fileUrl)
                 var path = decodeURIComponent(wrapFileUrl(fileDialog.fileUrl))
+
                 dumpFile(path)
+
             }
             onRejected: {
                 console.log("Canceled")
