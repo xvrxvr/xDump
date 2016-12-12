@@ -3,7 +3,7 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="FileHeader" type="String" method="assign">-h $(INP_FILE)</field>
+            <field name="FileHeader" type="String" method="assign">-f $(INP_FILE)</field>
         </field>
     </field>
 
@@ -38,6 +38,7 @@
         </field>
 
         <field name="viewConfigSet.SectionHeader" type="JS" methos="assign">
+
             new ViewConfig({execDriverConfig: { sectionName: 'sectionHeader'}})
         </field>
     </skip>
