@@ -3,14 +3,15 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="FileHeader" type="String" method="assign">-f $(INP_FILE)</field>
+            <field name="ArchiveHeader" type="String" method="assign">-a $(INP_FILE)</field>
+            <field name="FileHeader"    type="String" method="assign">-f $(INP_FILE)</field>
             <field name="SectionHeader" type="String" method="assign">-h $(INP_FILE)</field>
             <field name="ProgramHeader" type="String" method="assign">-p $(INP_FILE)</field>
         </field>
     </field>
 
     <JS>
-        var lines = executer.exec('FileHeader').getLines();
+        var lines = executer.exec('ArchiveHeader').getLines();
         for (var i in lines)
         {
             var l = lines[i];
