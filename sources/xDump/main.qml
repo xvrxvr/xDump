@@ -233,27 +233,35 @@ ApplicationWindow {
             onAccepted: {
                 console.log("File to dump: " + fileDialog.fileUrl)
                 var path = decodeURIComponent(wrapFileUrl(fileDialog.fileUrl))
-
-                var sectionName = 'FileHeader';
-                webPanel.addTab(sectionName);
-                env.addGlobObject('INP_FILE', path);
-                env.loadConfig()
-
-                var lineStrm = executer.exec(sectionName);
-
-                var vt = viewConfigSet[sectionName].getViewTranslator(lineStrm);
-
-                var toLoad = vt.getHeader() +
-                             vt.getBody() +
-                             vt.getFooter();
-
-                webPanel.load(toLoad);
+                dumpFile(path)
             }
             onRejected: {
                 console.log("Canceled")
             }
             Component.onCompleted: visible = true
         }
+    }
+
+    function dumpFile(path) {
+        var sectionName = 'FileHeader';
+        dumpSection(path, sectionName);
+    }
+
+    function dumpSection(path, sectionName) {
+        webPanel.addTab(sectionName);
+        env.addGlobObject('INP_FILE', path);
+        env.loadConfig()
+
+        var lineStrm = executer.exec(sectionName);
+
+        var vt = viewConfigSet[sectionName].getViewTranslator(lineStrm);
+
+        var toLoad = vt.getHeader() +
+                     vt.getBody() +
+                     vt.getFooter();
+
+        webPanel.load(toLoad);
+        webPanel.saveData(toLoad);
     }
 
 }

@@ -19,21 +19,15 @@ Item {
             onCurrentIndexChanged: {
                 if (count > 0) {
                     var tab = getTab(currentIndex)
-                    webView.url = "_" + getTab(currentIndex).title
+                    if (tab.is_saved) {
+                        webView.loadHtml(tab.saved_data)
+                    } else {
+                        webView.url = "_" + getTab(currentIndex).title
+                    }
                 } else {
-                    webView.url = "_null"
+                    webView.url = "_Empty"
                 }
             }
-/*
-            Tab {
-                id: tab0
-                title: "Main1"
-            }
-            Tab {
-                id: tab1
-                title: "Main2"
-            }
-            */
         }
     }
 
@@ -53,9 +47,12 @@ Item {
 
     function addTab(name) {
         var tab = tabComponent.createObject(tabBar)
-        tab.title = name
         tabBar.currentIndex = tabBar.count - 1
-        webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
+        if (name) {
+            tab.title = name
+        } else {
+            tab.title = "Empty"
+        }
     }
 
     function deleteTab() {
@@ -64,21 +61,18 @@ Item {
             var index = tabBar.currentIndex
             tabBar.currentIndex = 0
             tabBar.currentIndex = index
-            webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
         }
     }
 
     function nextTab() {
         if (tabBar.currentIndex < (tabBar.count - 1)) {
             tabBar.currentIndex += 1
-            webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
         }
     }
 
     function previousTab() {
         if (tabBar.currentIndex > 0) {
             tabBar.currentIndex -= 1
-            webView.url = "_" + tabBar.getTab(tabBar.currentIndex).title
         }
     }
 
@@ -90,6 +84,12 @@ Item {
         return webView.loadProgress
     }
 
+    function saveData(html) {
+        var tab = tabBar.getTab(tabBar.currentIndex)
+        tab.saved_data = html
+        tab.is_saved = true
+    }
+
 
     /*************************************************************************************************/
     /*Components*/
@@ -98,6 +98,8 @@ Item {
     Component {
         id: tabComponent
         Tab {
+            property var saved_data: " "
+            property var is_saved: false
         }
     }
 }
