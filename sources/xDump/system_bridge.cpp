@@ -3,9 +3,13 @@
 #include <QStringList>
 #include <QProcess>
 #include <QUrl>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
 
 #include "config_parser.h"
 #include "system_bridge.h"
+#include "error_handler.h"
 
 namespace xDump {
 
@@ -31,6 +35,27 @@ void SystemBridge::addToBuffer (QString key, QString data)
 QString SystemBridge::getFromBuffer (QString key)
 {
     return QString::fromStdString(htmlBuffer[key.toStdString()]);
+}
+
+QString SystemBridge::loadStyles (QString cssFile)
+{
+    if (cssFile == "")
+        return "";
+
+    QString fileToOpen = QString("configs") + QDir::separator() + cssFile;
+    QFile file(fileToOpen);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text )) {
+        PrintError("Failed to open file for reading.", ErrorHandler::fatal);
+        ErrorHandler::checkState();
+        return "";
+    }
+
+    QTextStream in(&file);
+
+    QString res = in.readAll();
+
+    file.close();
+    return res;
 }
 
 }

@@ -250,8 +250,8 @@ function SectionsViewTranslator(data, config) {
                 if (header) {
                     tmp = tmp.split(' ').join('</td><td>');
                     if (color)
-                        this.data[i] = '<tr bgcolor="#AADAF9"><td>' + tmp + '</td>';
-                    else this.data[i] = '<tr bgcolor="#70BFF3"><td>' + tmp + '</td>';
+                        this.data[i] = '<tr href="javascript:void(0)"><td>' + tmp + '</td>';
+                    else this.data[i] = '<tr><td>' + tmp + '</td>';
                     color = !color;
                 }
                 else {
@@ -277,6 +277,9 @@ SectionsViewTranslator.prototype = {
         return '<!DOCTYPE html>' +
                 '<html>' +
                 '<body>' +
+                '<style>' +
+                loadStyles('section_style.css') +
+                '</style>'+
                 '<table border="1" width="100%">';
     },
     getFooter : function () {
@@ -292,3 +295,4 @@ SectionsViewTranslator.prototype = {
 }
 
 /*--------------------------------------------------------------------------*/
+
