@@ -6,6 +6,7 @@
             <field name="ArchiveHeader" type="String" method="assign">$(OPT=-a) $(INP_FILE)</field>
             <field name="FileHeader"    type="String" method="assign">$(OPT=-f) $(INP_FILE)</field>
             <field name="SectionHeader" type="String" method="assign">$(OPT=-h) $(INP_FILE)</field>
+            <field name="CustomSection" type="String" method="assign">$(OPT=-hj) $(INP_FILE)</field>
             <field name="ProgramHeader" type="String" method="assign">$(OPT=-p) $(INP_FILE)</field>
         </field>
     </field>
