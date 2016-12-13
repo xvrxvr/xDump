@@ -45,7 +45,7 @@
         <field name="viewConfigSet.ProgramHeader" type="ViewConfig" method="assign">
             <field name="autoload" type="JS" method="assign">true</field>
             <field name="config" type="Object" method="add">
-                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="viewTranslator" type="JS" method="assign">ProgramViewTranslator</field>
                 <field name="execDriverConfig" type="JS">({sectionName:'ProgramHeader'})</field>
                 <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
             </field>
