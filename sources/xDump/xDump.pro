@@ -28,7 +28,8 @@ QMAKE_EXTRA_TARGETS += first copydata
 
 DISTFILES += \
     configs/default_config.xml \
-    configs/path.ini
+    configs/path.ini \
+    configs/section_style.css
 
 HEADERS += \
     error_handler.h \
