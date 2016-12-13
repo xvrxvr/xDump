@@ -229,7 +229,6 @@ console.log("JSDriver loaded");
 
 function SectionsViewTranslator(data, config) {
     this.data = data.getLines();
-    console.log(this.data.length);
 
     var tableFlag = false;
     var dataFlag = true;
