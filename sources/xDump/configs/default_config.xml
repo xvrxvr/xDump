@@ -3,11 +3,11 @@
     <field name="executer.config" type="Object" method="add">
         <field name="common" type="JS" method="assign">['$(PATH)','$(EXE_NAME=objdump)']</field>
         <field name="sections" type="Object" method="add">
-            <field name="ArchiveHeader" type="String" method="assign">$(OPT=-a) $(INP_FILE)</field>
-            <field name="FileHeader"    type="String" method="assign">$(OPT=-f) $(INP_FILE)</field>
-            <field name="SectionHeader" type="String" method="assign">$(OPT=-h) $(INP_FILE)</field>
-            <field name="CustomSection" type="String" method="assign">$(OPT=-dj) $(SECTION) $(INP_FILE)</field>
-            <field name="ProgramHeader" type="String" method="assign">$(OPT=-p) $(INP_FILE)</field>
+            <field name="ArchiveHeader" type="String" method="assign">-a $(OPT=) $(INP_FILE)</field>
+            <field name="FileHeader"    type="String" method="assign">-f $(OPT=) $(INP_FILE)</field>
+            <field name="SectionHeader" type="String" method="assign">-h $(OPT=-h) $(INP_FILE)</field>
+            <field name="CustomSection" type="String" method="assign">$(OPT=) -dj $(SECTION) $(INP_FILE)</field>
+            <field name="ProgramHeader" type="String" method="assign">-p $(OPT=) $(INP_FILE)</field>
         </field>
     </field>
 

@@ -17,7 +17,7 @@ Environment.prototype = {
     },
     addGlobObject : function (name, object) {
         if (name in this.globObjects)
-            console.log("Warning. Variable already set.")
+            console.log("Warning. Variable " + name + " already set.")
 
         this.globObjects[name] = object;
     },
@@ -120,11 +120,13 @@ Executer.prototype =  {
     config : new Object,
 
     exec : function (sectionName) {
+        //var fullExecPath = env.substituteString(executer.config.common[0] + "/" + executer.config.common[1]).replace(/ +(?= )/g,'')
         var fullExecPath = env.substituteString("$(PATH)/$(EXE_NAME)")
-        var argsStr = env.substituteString(this.config.sections[sectionName])
+        var argsStr = env.substituteString(this.config.sections[sectionName]).replace(/ +(?= )/g,'').trim()
         //console.log(fullExecPath)
         //console.log(argsStr)
         var str = executeCommand(fullExecPath, argsStr.split(' '));
+        //console.log(str)
         //console.log("Objdump done.");
 
         return new LineStream(str);
