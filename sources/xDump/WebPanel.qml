@@ -42,7 +42,6 @@ Item {
         onLoadingChanged: {
             if (loadRequest.url.toString().search("///INTERNAL_LINK") != -1 &&
                     loadRequest.status === 0 ){
-                console.log(loadRequest.status)
                 var sectionName = loadRequest.url.toString().split(' ')[1]
                 webPanel.addTab(sectionName);
                 env.addGlobObject('SECTION', sectionName);
@@ -55,7 +54,7 @@ Item {
                              vt.getFooter();
 
                 webPanel.showHtml(toLoad);
-                webPanel.saveData(sectionName, toLoad);
+                webPanel.saveData(env.getGlobObject('INP_FILE') + ':' +sectionName, toLoad);
             }
         }
     }
