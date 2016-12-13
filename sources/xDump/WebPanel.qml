@@ -40,9 +40,22 @@ Item {
         url: ""
         visible: true
         onLoadingChanged: {
-            if (loadRequest.url.toString().search("///INTERNAL_LINK") != -1){
+            if (loadRequest.url.toString().search("///INTERNAL_LINK") != -1 &&
+                    loadRequest.status === 0 ){
+                console.log(loadRequest.status)
+                var sectionName = loadRequest.url.toString().split(' ')[1]
+                webPanel.addTab(sectionName);
+                env.addGlobObject('SECTION', sectionName);
+                var lineStrm = executer.exec("CustomSection");
 
-                console.log(loadRequest.url.toString())
+                var vt = viewConfigSet["FileHeader"].getViewTranslator(lineStrm);
+
+                var toLoad = vt.getHeader() +
+                             vt.getBody() +
+                             vt.getFooter();
+
+                webPanel.showHtml(toLoad);
+                webPanel.saveData(sectionName, toLoad);
             }
         }
     }
