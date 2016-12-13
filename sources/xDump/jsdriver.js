@@ -232,7 +232,6 @@ function SectionsViewTranslator(data, config) {
     var tableFlag = false;
     var dataFlag = true;
     var header = false;
-    var color = false;
     for (var i in this.data) {
         this.data[i] = escapeCommonSigns(this.data[i]);
         if(this.data[i].match(/Sections/g) !== null) {
@@ -246,13 +245,14 @@ function SectionsViewTranslator(data, config) {
                 tmp = tmp.replace(/\s+/g, ' ').trim();
                 if (tmp === '')
                     continue;
-
+                var section = tmp.split(' ', 2)[1]
                 if (header) {
-                    tmp = tmp.split(' ').join('</td><td>');
-                    if (color)
-                        this.data[i] = '<tr href="javascript:void(0)"><td>' + tmp + '</td>';
-                    else this.data[i] = '<tr><td>' + tmp + '</td>';
-                    color = !color;
+                    tmp = tmp.split(' ').join('</a></td><td><a href="qrc:///INTERNAL_LINK '+
+                                              section + '">');
+
+                    this.data[i] = '<tr><td><a href="qrc:///INTERNAL_LINK' +
+                         section + '">' + tmp + '</a></td>';
+
                 }
                 else {
                     tmp = tmp.split(' ').join('</th><th>');

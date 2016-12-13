@@ -39,6 +39,12 @@ Item {
         width: parent.width
         url: ""
         visible: true
+        onLoadingChanged: {
+            if (loadRequest.url.toString().search("///INTERNAL_LINK") != -1){
+
+                console.log(loadRequest.url.toString())
+            }
+        }
     }
 
     function openUrl(url) {
