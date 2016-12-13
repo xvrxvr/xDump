@@ -70,6 +70,8 @@ var viewConfigSet = new ViewConfigSet();
 // Environment.LineStream = function (data) {...}
 // Environment.LineStream.prototype.getLine() {...}
 
+console.log("Loading LineStream");
+
 function StreamError(message) {
     this.name = 'StreamError';
     this.message = message || 'Error occured!';
@@ -102,9 +104,12 @@ LineStream.prototype = {
 
     kill : function() {this.data = '';},
 
-    isEOF : function() {}
+    isEOF : function() {
+        if(this.index + 1 >= this.data.length)
+            return true;
+        return false;
+    }
 }
-
 
 /*--------------------------------------------------------------------------*/
 
@@ -169,6 +174,13 @@ ViewConfig.prototype = {
 
 
 // Escapes signs in html
+function escapeCommonSigns(str) {
+    var tmp = str.replaceAll('&', '&amp');
+    tmp = tmp.replaceAll('<', '&lt;');
+    return tmp;
+}
+
+
 String.prototype.replaceAll = function (sign, newSign) {
   var str = this + '';
   if (typeof(sign) === "string") {
@@ -191,9 +203,7 @@ PlainViewTranslator.prototype = {
         // Escape symbols
         var result = '';
         for (var i in this.data) {
-            var tmp = this.data[i].replaceAll('&', '&amp;');
-            tmp = tmp.replaceAll('<', '&lt;');
-            //tmp = tmp.replaceAll('\n', '<br>\n');
+            var tmp = escapeCommonSigns(this.data[i]);
             tmp += '<br>';
             result += tmp;
         }
@@ -215,3 +225,70 @@ SimpleExecDriver.prototype = {
 
 console.log("JSDriver loaded");
 
+/*--------------------------------------------------------------------------*/
+
+function SectionsViewTranslator(data, config) {
+    this.data = data.getLines();
+    var tableFlag = false;
+    var dataFlag = true;
+    var header = false;
+    var color = false;
+    for (var i in this.data) {
+        this.data[i] = escapeCommonSigns(this.data[i]);
+        if(this.data[i].match(/Sections/g) !== null) {
+            this.data[i] += '<br>';
+            tableFlag = true;
+            continue;
+        }
+        if(tableFlag) {
+            if (dataFlag) {
+                var tmp = this.data[i].replace(/File off/g, 'File_off');
+                tmp = tmp.replace(/\s+/g, ' ').trim();
+                if (tmp === '')
+                    continue;
+
+                if (header) {
+                    tmp = tmp.split(' ').join('</td><td>');
+                    if (color)
+                        this.data[i] = '<tr bgcolor="#AADAF9"><td>' + tmp + '</td>';
+                    else this.data[i] = '<tr bgcolor="#70BFF3"><td>' + tmp + '</td>';
+                    color = !color;
+                }
+                else {
+                    tmp = tmp.split(' ').join('</th><th>');
+                    this.data[i] = '<tr><th>' + tmp + '</th></tr>';
+                }
+
+                if (header) {
+                    dataFlag = false;
+                }
+                header = true;
+            }
+            else {
+                this.data[i] = '<td>' + this.data[i] + '</td></tr>';
+                dataFlag = true;
+            }
+        }
+    }
+}
+
+SectionsViewTranslator.prototype = {
+    getHeader : function () {
+        return '<!DOCTYPE html>' +
+                '<html>' +
+                '<body>' +
+                '<table border="1" width="100%">';
+    },
+    getFooter : function () {
+        return '</table>' +
+                '</body>' +
+                '</html>';
+    },
+    getBody   : function (from, to) {
+        if (from === 'undefined' | to === 'undefined')
+            return this.data;
+        return this.data.slice(from, to);
+    }
+}
+
+/*--------------------------------------------------------------------------*/
