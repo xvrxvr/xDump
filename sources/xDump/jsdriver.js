@@ -301,6 +301,18 @@ SectionsViewTranslator.prototype = {
 
 /*--------------------------------------------------------------------------*/
 
+function getEvenOddElems(arr, odd) {
+    res = new Array;
+    for (var i = 0; i < arr.length; i++) {
+        if(i % 2 === odd)
+            res.push(arr[i]);
+    }
+
+    return res;
+}
+
+/*--------------------------------------------------------------------------*/
+
 function ProgramViewTranslator(data, config) {
     this.data = data.getLines();
     var state = 0;
@@ -338,7 +350,6 @@ function ProgramViewTranslator(data, config) {
         if(state == 1) {
             var tmp = this.data[i].replace(/\s+/g, " ");
             tmp = tmp.replace(/([a-zA-Z]+)\soff/, "$1_off");
-            console.log(tmp);
             tmp = tmp.trim().split(' ');
             if (!tableSet) {
                 // Add class styles
@@ -348,11 +359,36 @@ function ProgramViewTranslator(data, config) {
             i += 1;
             var tmp1 = this.data[i].replace(/\s+/g, " ");
             tmp1 = tmp1.trim().split(' ');
-
-            this.data[i] = '<tr><td>' + tmp + '</td></tr>';
+            tmp = tmp.concat(tmp1);
+            var head = getEvenOddElems(tmp, 0).join('</th><th>');
+            var vals = getEvenOddElems(tmp, 1).join('</td><td>');
+            this.data[i-1] += '<tr><th>' + head + '</th><tr>';
+            this.data[i] = '<tr><td>' + vals + '</td></tr>';
         }
-        if(state == 2) {}
-        if(state == 3) {}
+
+        if(state == 2) {
+            var tmp = this.data[i].trim().replace(/\s+/g, " ");
+            tmp = tmp.split(" ").join('</td><td>');
+            this.data[i] = '<tr><td>' + tmp + '</td></tr>';
+            if (!tableSet) {
+                this.data[i] = "<table>" + this.data[i];
+                tableSet = !tableSet;
+            }
+        }
+        if(state == 3) {
+            var tmp = this.data[i].trim().replace(/\s+/g, " ");
+            if (tmp.match(/required from/g) !== null) {
+                this.data[i] = '<tr><th colspan="4">' + tmp + '</th></tr>';
+            }
+            else {
+                tmp = tmp.split(" ").join('</td><td>');
+                this.data[i] = '<tr><td>' + tmp + '</td></tr>';
+            }
+            if (!tableSet) {
+                this.data[i] = "<table>" + this.data[i];
+                tableSet = !tableSet;
+            }
+        }
         i += 1;
     }
 }
