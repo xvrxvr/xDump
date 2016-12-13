@@ -229,13 +229,17 @@ console.log("JSDriver loaded");
 
 function SectionsViewTranslator(data, config) {
     this.data = data.getLines();
+    console.log(this.data.length);
+
     var tableFlag = false;
     var dataFlag = true;
     var header = false;
     for (var i in this.data) {
         this.data[i] = escapeCommonSigns(this.data[i]);
+        if (!tableFlag) this.data[i] += '<br>';
+        if (!tableFlag) this.data[i] = this.data[i].replace(/\,/g, "");
         if(this.data[i].match(/Sections/g) !== null) {
-            this.data[i] += '<br>';
+
             tableFlag = true;
             continue;
         }
@@ -288,11 +292,83 @@ SectionsViewTranslator.prototype = {
                 '</html>';
     },
     getBody   : function (from, to) {
-        if (from === 'undefined' | to === 'undefined')
+        if (from === 'undefined' | to === 'undefined') {
             return this.data;
+        }
         return this.data.slice(from, to);
     }
 }
 
 /*--------------------------------------------------------------------------*/
 
+function ProgramViewTranslator(data, config) {
+    this.data = data.getLines();
+    var state = 0;
+
+    var tableSet = false;
+    var i = 0;
+    while(i < this.data.length) {
+        if (this.data[i].trim() === '') {i+=1; continue;}
+        this.data[i] = escapeCommonSigns(this.data[i]);
+
+        if(this.data[i].match(/Program Header/g) !== null) {
+            this.data[i] = '<h2>' + this.data[i] + '</h2><br>';
+            state = 1;
+            tableSet = false;
+            i += 1;
+            continue;
+        }
+        if(this.data[i].match(/Dynamic Section/g) !== null) {
+            this.data[i] = '</table><h2>' + this.data[i] + '</h2><br>';
+            state = 2;
+            tableSet = false;
+            i += 1;
+            continue;
+        }
+        if(this.data[i].match(/Version References/g) !== null) {
+            this.data[i] = '</table><h2>' + this.data[i] + '</h2><br>';
+            state = 3;
+            tableSet = false;
+            i += 1;
+            continue;
+        }
+
+        if(state == 0) {this.data[i] += "<br>"; i += 1; continue;}
+
+        if(state == 1) {
+            var tmp = this.data[i].replace(/\s+/g, " ");
+            tmp = tmp.replace(/([a-zA-Z]+)\soff/, "$1_off");
+            console.log(tmp);
+            tmp = tmp.trim().split(' ');
+            if (!tableSet) {
+                // Add class styles
+                this.data[i] = "<table>";
+                tableSet = !tableSet;
+            } else this.data[i] = '';
+            i += 1;
+            var tmp1 = this.data[i].replace(/\s+/g, " ");
+            tmp1 = tmp1.trim().split(' ');
+
+            this.data[i] = '<tr><td>' + tmp + '</td></tr>';
+        }
+        if(state == 2) {}
+        if(state == 3) {}
+        i += 1;
+    }
+}
+
+ProgramViewTranslator.prototype = {
+    getHeader : function() {
+        return '<!DOCTYPE html>' +
+                '<html>' +
+                '<body>' +
+                '<style>' +
+                loadStyles('section_style.css') +
+                '</style>';
+    },
+    getFooter : function() {
+        return '</body>' +
+                '</html>';
+    },
+    getBody   : function() {return this.data;}
+}
