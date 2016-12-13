@@ -49,6 +49,8 @@ int main(int argc, char *argv[])
     globalObject.setProperty("addToBuffer", jsAddToBuffer);
     QJSValue jsGetFromBuffer = jsSystemBridge.property("getFromBuffer");
     globalObject.setProperty("getFromBuffer", jsGetFromBuffer);
+    QJSValue jsLoadStyles = jsSystemBridge.property("loadStyles");
+    globalObject.setProperty("loadStyles", jsLoadStyles);
 
     // Load JS script to jsEngine
     QString fileName = ":/jsdriver.js";
