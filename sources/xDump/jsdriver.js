@@ -232,6 +232,7 @@ function SectionsViewTranslator(data, config) {
     var tableFlag = false;
     var dataFlag = true;
     var header = false;
+    var color = false;
     for (var i in this.data) {
         this.data[i] = escapeCommonSigns(this.data[i]);
         if(this.data[i].match(/Sections/g) !== null) {
@@ -245,11 +246,19 @@ function SectionsViewTranslator(data, config) {
                 tmp = tmp.replace(/\s+/g, ' ').trim();
                 if (tmp === '')
                     continue;
-//                console.log(tmp);
-                tmp = tmp.split(' ').join('</td><td>');
-//                console.log(tmp);
-                this.data[i] = '<tr><td>' + tmp + '</td>';
-                console.log(this.data[i]);
+
+                if (header) {
+                    tmp = tmp.split(' ').join('</td><td>');
+                    if (color)
+                        this.data[i] = '<tr bgcolor="#AADAF9"><td>' + tmp + '</td>';
+                    else this.data[i] = '<tr bgcolor="#70BFF3"><td>' + tmp + '</td>';
+                    color = !color;
+                }
+                else {
+                    tmp = tmp.split(' ').join('</th><th>');
+                    this.data[i] = '<tr><th>' + tmp + '</th></tr>';
+                }
+
                 if (header) {
                     dataFlag = false;
                 }
@@ -257,7 +266,6 @@ function SectionsViewTranslator(data, config) {
             }
             else {
                 this.data[i] = '<td>' + this.data[i] + '</td></tr>';
-                console.log(this.data[i]);
                 dataFlag = true;
             }
         }
