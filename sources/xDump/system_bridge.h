@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE QString wrapFileUrl (QUrl fileUrl);
     Q_INVOKABLE void    addToBuffer (QString key, QString data);
     Q_INVOKABLE QString getFromBuffer (QString key);
+    Q_INVOKABLE QString loadStyles  (QString fileUrl = "");
 
 private:
     QJSEngine &jsEngine;
