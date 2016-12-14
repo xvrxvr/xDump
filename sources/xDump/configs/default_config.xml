@@ -103,7 +103,7 @@
         <field name="viewConfigSet.SectionHeader" type="ViewConfig" method="assign">
             <field name="autoload" type="JS" method="assign">true</field>
             <field name="config" type="Object" method="add">
-                <field name="viewTranslator" type="JS" method="assign">PlainViewTranslator</field>
+                <field name="viewTranslator" type="JS" method="assign">SectionsViewTranslator</field>
                 <field name="execDriverConfig" type="JS">({sectionName:'SectionHeader'})</field>
                 <field name="execDriver" type="JS" method="assign">SimpleExecDriver</field>
             </field>
