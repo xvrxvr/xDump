@@ -39,7 +39,7 @@ Environment.prototype = {
             return str;
 
         var result = str;
-        result = this._replacer('\\$\\([0-9a-zA-Z]+\\=([0-9a-zA-Z\\/\\.\\\\\\:\\-]*)\\)',
+        result = this._replacer('\\$\\([0-9a-zA-Z\\_]+\\=([0-9a-zA-Z\\/\\.\\\\\\:\\-]*)\\)',
                                 result, '$1');
         for (var key in this.globObjects) {
             result = this._replacer('\\$\\(' + key + '\\)', result, this.getGlobObject(key));
@@ -120,8 +120,7 @@ Executer.prototype =  {
     config : new Object,
 
     exec : function (sectionName) {
-        //var fullExecPath = env.substituteString(executer.config.common[0] + "/" + executer.config.common[1]).replace(/ +(?= )/g,'')
-        var fullExecPath = env.substituteString("$(PATH)/$(EXE_NAME)")
+        var fullExecPath = env.substituteString(executer.config.common[0] + "/" + executer.config.common[1])
         var argsStr = env.substituteString(this.config.sections[sectionName]).replace(/ +(?= )/g,'').trim()
         //console.log(fullExecPath)
         //console.log(argsStr)
