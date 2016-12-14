@@ -34,6 +34,7 @@ private:
     bool checkObjectHierarchy(QStringList objectHierarchy);
 
     static QString defaultConfigFileName;
+    static bool alreadyParsed;
     QJSEngine &jsEngine;
 };
 

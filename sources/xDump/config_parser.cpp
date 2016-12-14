@@ -12,6 +12,7 @@
 namespace xDump {
 
 QString ConfigParser::defaultConfigFileName = QString("configs") + QDir::separator() + QString("default_config.xml");
+bool ConfigParser::alreadyParsed = false;
 
 void ConfigParser::parseConfig(QString inputFile, QString section)
 {
@@ -45,8 +46,10 @@ void ConfigParser::parseConfig(QString inputFile, QString section)
     file.close();
 
     QDomElement docElem = doc.documentElement();
-    parseXmlElements(docElem, ConfigElementAttributes());
+    if (!alreadyParsed)
+        parseXmlElements(docElem, ConfigElementAttributes());
     ErrorHandler::checkState();
+    alreadyParsed = true;
 }
 
 void ConfigParser::parseXmlElements(QDomNode docElem, ConfigElementAttributes parentAttributes)
