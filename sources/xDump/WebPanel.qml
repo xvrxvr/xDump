@@ -47,7 +47,7 @@ Item {
                 env.addGlobObject('SECTION', sectionName);
                 var lineStrm = executer.exec("CustomSection");
 
-                var vt = viewConfigSet["FileHeader"].getViewTranslator(lineStrm);
+                var vt = viewConfigSet["CustomSection"].getViewTranslator(lineStrm);
 
                 var toLoad = vt.getHeader() +
                              vt.getBody() +

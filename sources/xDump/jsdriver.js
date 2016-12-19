@@ -176,6 +176,8 @@ ViewConfig.prototype = {
 
 // Escapes signs in html
 function escapeCommonSigns(str) {
+    if (str === undefined) return str;
+
     var tmp = str.replaceAll('&', '&amp');
     tmp = tmp.replaceAll('<', '&lt;');
     return tmp;
@@ -408,3 +410,94 @@ ProgramViewTranslator.prototype = {
     },
     getBody   : function() {return this.data;}
 }
+
+
+/*--------------------------------------------------------------------------*/
+
+function highlightLeftPane(str) {
+    if (str === undefined) return str;
+    var result = '';
+    result += '<span style="color: #000000; ">';
+    result += escapeCommonSigns(str);
+    result += '</span>';
+    return result;
+}
+
+function highlightCMD(str) {
+    if (str === undefined) return str;
+    var result = '';
+    result += '<span style="color: #00007f; font-weight: bold;">';
+    result += escapeCommonSigns(str);
+    result += '</span>';
+    return result;
+}
+
+function highlightARG(arg_str, cmt_str) {
+    if (arg_str === undefined) return arg_str + ' ' + cmt_str;
+    var result = '';
+    result += '<span style="color: #000000; font-weight: bold;">';
+    result += escapeCommonSigns(arg_str);
+    result += ' ';
+    result += escapeCommonSigns(cmt_str);
+    result += '</span>';
+    return result;
+}
+
+function AsmViewTranslator(data, config) {
+    //assert(typeof(data) === 'array');
+    this.data = data.getLines();
+}
+
+AsmViewTranslator.prototype = {
+    getHeader : function() {
+        return '<!DOCTYPE html>' +
+                '<html>' +
+                '<body>';
+    },
+    getFooter : function() {
+        return  '</body>' +
+                '</html>';
+    },
+    getBody   : function () {
+        var result = '';
+        for (var i in this.data) {
+            var splt = this.data[i].split('\t');
+
+            // If that is not a command, just print it as-is:
+            if (splt[0] === undefined || splt.length == 1) {
+                result += highlightLeftPane(this.data[i]);
+                result += '<br>';
+                continue;
+            }
+
+            var left_pane = splt[0] + splt[1];
+            result += highlightLeftPane(left_pane).replaceAll(' ', '&nbsp;');
+
+            if (splt.length == 2) {
+                result += '<br>';
+                continue;
+            }
+
+
+
+            var cmd_str = splt[2];
+            var arg_str = '';
+            var comment = '';
+            if (splt[2].indexOf(' ') > -1) {
+                cmd_str = splt[2].split(' ')[0];
+                arg_str = splt[2].split(' ')[1];
+
+                if (splt[2].split(' ').length > 2)
+                    comment = splt[2].split(' ')[3]; // Probably need to write a for loop here
+            }
+
+            result += highlightCMD(cmd_str);
+            result += highlightARG(arg_str, comment);
+            result += '<br>';
+        }
+
+        return result;
+    }
+}
+
+
