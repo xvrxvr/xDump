@@ -470,6 +470,14 @@ function AsmViewTranslator(data, config) {
     this.data = data.getLines();
 }
 
+function rpadding(str, len) {
+    ret = str;
+    while (ret.length < 6*len) ret += '&nbsp;';
+    return ret;
+}
+
+
+
 AsmViewTranslator.prototype = {
     getHeader : function() {
         return '<!DOCTYPE html>' +
@@ -492,8 +500,9 @@ AsmViewTranslator.prototype = {
                 continue;
             }
 
-            var left_pane = splt[0] + splt[1];
-            result += highlightLeftPane(left_pane).replaceAll(' ', '&nbsp;');
+            result += rpadding(highlightLeftPane(splt[0]).replaceAll(' ', '&nbsp;'), 10);
+            result += '&nbsp;&nbsp;&nbsp;';
+            result += rpadding(highlightLeftPane(splt[1]).replaceAll(' ', '&nbsp;'), 30);
 
             if (splt.length == 2) {
                 result += '<br>\n';
