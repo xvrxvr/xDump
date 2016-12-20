@@ -413,6 +413,14 @@ ProgramViewTranslator.prototype = {
 
 
 /*--------------------------------------------------------------------------*/
+function highlightHeader(str) {
+    if (str === undefined) return str;
+    var result = '';
+    result += '<span style="color: #000000; font-weight: bold;">';
+    result += escapeCommonSigns(str);
+    result += '</span>';
+    return result;
+}
 
 function highlightLeftPane(str) {
     if (str === undefined) return str;
@@ -432,19 +440,33 @@ function highlightCMD(str) {
     return result;
 }
 
-function highlightARG(arg_str, cmt_str) {
-    if (arg_str === undefined) return arg_str + ' ' + cmt_str;
+function highlightARGS(arg_str) {
+    if (arg_str === undefined) return arg_str;
     var result = '';
-    result += '<span style="color: #000000; font-weight: bold;">';
-    result += escapeCommonSigns(arg_str);
-    result += ' ';
-    result += escapeCommonSigns(cmt_str);
-    result += '</span>';
+    if (arg_str.indexOf(',') > -1) { // Two args
+        result += highlightARG(arg_str.split(',')[0]);
+        result += ', ';
+        result += highlightARG(arg_str.split(',')[1]);
+    } else {
+        result += highlightARG(arg_str); // One arg
+    }
     return result;
 }
 
+function highlightARG(str) {
+    var ret = str;
+    // Hex numbers
+    ret = ret.replace(/0x[0-9,a-f]+/gi, '<span style="color: #ff0000; ">$&</span>');
+    // '(' and ')'
+    ret = ret.replace(/[(,)]/gi, '<span style="color: #808030; ">$&</span>');
+    // '$'
+    ret = ret.replace(/$/gi, '<span style="color: #0000ff; font-weight: bold; ">$&</span>');
+    // Registers
+    ret = ret.replace(/%([0-9,a-z]+)/gi, '%<span style="color: #008000; font-weight: bold; ">$1</span>');
+    return ret;
+}
+
 function AsmViewTranslator(data, config) {
-    //assert(typeof(data) === 'array');
     this.data = data.getLines();
 }
 
@@ -465,8 +487,8 @@ AsmViewTranslator.prototype = {
 
             // If that is not a command, just print it as-is:
             if (splt[0] === undefined || splt.length == 1) {
-                result += highlightLeftPane(this.data[i]);
-                result += '<br>';
+                result += highlightHeader(this.data[i]);
+                result += '<br>\n';
                 continue;
             }
 
@@ -474,26 +496,20 @@ AsmViewTranslator.prototype = {
             result += highlightLeftPane(left_pane).replaceAll(' ', '&nbsp;');
 
             if (splt.length == 2) {
-                result += '<br>';
+                result += '<br>\n';
                 continue;
             }
 
-
-
             var cmd_str = splt[2];
             var arg_str = '';
-            var comment = '';
             if (splt[2].indexOf(' ') > -1) {
-                cmd_str = splt[2].split(' ')[0];
-                arg_str = splt[2].split(' ')[1];
+                cmd_str = splt[2].substring(0, splt[2].indexOf(' '));
+                arg_str = splt[2].substring(splt[2].indexOf(' ')).replace(/^\s*/, '').replace(/\s*$/, '');
+             }
 
-                if (splt[2].split(' ').length > 2)
-                    comment = splt[2].split(' ')[3]; // Probably need to write a for loop here
-            }
-
-            result += highlightCMD(cmd_str);
-            result += highlightARG(arg_str, comment);
-            result += '<br>';
+            result += highlightCMD(cmd_str) + ' ';
+            result += highlightARGS(arg_str);
+            result += '<br>\n';
         }
 
         return result;
